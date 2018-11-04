@@ -1,0 +1,16 @@
+{
+  "name": "spaceteam",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "backpack"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "backpack-core": "^0.8.2",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "shortid": "^2.2.13",
+    "socket.io": "^2.1.1"
+  }
+}
