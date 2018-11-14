@@ -1,10 +1,11 @@
 from socket import AF_INET, socket, SOCK_STREAM
-from threading import Thread
+from sys import stdin
+from select import select
 
-HOST = 'localhost'
-TCP_PORT = 3002
+HOST = '202.92.144.45'
+TCP_PORT = 80
 UDP_PORT = 3003
-BUFFER = 1024
+BUFFER = 4096
 
 class TcpConnection():
   def __init__(self):
@@ -15,15 +16,28 @@ class TcpConnection():
     self._socket.connect(self.address)
 
   def receive(self, callback):
+    # while True:
+    #   try:
+    #     data = self._socket.recv(BUFFER)
+    #     callback(data)
+    #   except OSError:
+    #     break
     while True:
       try:
-        data = self._socket.recv(BUFFER).decode('utf8')
-        callback(data)
+        infds, outfds, errfds = select([self._socket], [self._socket], [], 5)
+        
+        if infds:
+          data = self._socket.recv(BUFFER)
+          if data:
+            callback(data)
       except OSError:
         break
 
   def send(self, data):
-    self._socket.send(bytes(data, 'utf8'))
+    self._socket.send(data.SerializeToString())
+
+    res = self._socket.recv(BUFFER)
+    return res
 
   def close(self):
     self._socket.shutdown(1)
