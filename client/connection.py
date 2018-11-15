@@ -10,26 +10,28 @@ BUFFER = 4096
 class TcpConnection():
   def __init__(self):
     self.address = (HOST, TCP_PORT)
-    self.active = True
+    self.active = False
     self._socket = socket(AF_INET, SOCK_STREAM)
 
     self._socket.connect(self.address)
 
-  def receive(self, callback):
-    # while True:
-    #   try:
-    #     data = self._socket.recv(BUFFER)
-    #     callback(data)
-    #   except OSError:
-    #     break
-    while True:
+  def receive(self, sender, receiver):
+    self.active = True
+
+    while self.active:
       try:
-        infds, outfds, errfds = select([self._socket], [self._socket], [], 5)
+        infds, outfds, errfds = select([0, self._socket], [], [])
         
-        if infds:
-          data = self._socket.recv(BUFFER)
-          if data:
-            callback(data)
+        for packet in infds:
+          if packet == 0:
+            data = sender()
+            self._socket.send(data.SerializeToString())
+
+            if data.type == 0:
+              self.close()
+          elif packet == self._socket:
+            data = self._socket.recv(BUFFER)
+            receiver(data)
       except OSError:
         break
 
@@ -40,5 +42,6 @@ class TcpConnection():
     return res
 
   def close(self):
+    self.active = False
     self._socket.shutdown(1)
     self._socket.close()

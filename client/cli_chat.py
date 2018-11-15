@@ -11,21 +11,7 @@ if __name__ == '__main__':
 
   username = input('Enter username: ')
 
-  print('Connecting with lobby {}...'.format(lobby))
+  print('Connecting to lobby {}...'.format(lobby))
   print()
   chat.connect(lobby, username)
   chat.listen()
-
-  while True:
-    sys.stdout.flush()
-    msg = input('CHAT:{} > '.format(username))
-
-    if msg == 'lp()':
-      res = chat.getPlayerList()
-    elif msg == 'exit()':
-      res = chat.disconnect()
-      break
-    else:
-      res = chat.sendChat(msg)
-
-    # print(res)

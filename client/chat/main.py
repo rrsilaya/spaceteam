@@ -1,3 +1,5 @@
+import sys
+
 from threading import Thread
 from connection import TcpConnection
 
@@ -36,12 +38,15 @@ class Chat():
 
     self.user = payload.player
     self.lobby = payload.lobby_id
+    self.prompt = '[CHAT:{}]> '.format(self.user.name)
 
     return payload.lobby_id
 
   def listen(self):
-    self.stream = Thread(target=self.connection.receive, args=[self._parsePacket])
+    self.stream = Thread(target=self.connection.receive, args=[self._getInput, self._parsePacket])
     self.stream.start()
+    
+    print(self.prompt, end='', flush=True)
 
   def sendChat(self, message):
     payload = self.packet.ChatPacket()
@@ -51,19 +56,12 @@ class Chat():
     payload.player.name = self.user.name
     payload.lobby_id = self.lobby
 
-    chat = self.connection.send(payload)
-    payload.ParseFromString(chat)
-
     return payload
 
   def getPlayerList(self):
     payload = self.packet.PlayerListPacket()
 
     payload.type = self.packet.PLAYER_LIST
-    players = self.connection.send(payload)
-
-    payload.ParseFromString(players)
-
     return payload
 
   def disconnect(self):
@@ -73,12 +71,7 @@ class Chat():
     payload.player.name = self.user.name
     payload.player.id = self.user.id
 
-    disconnection = self.connection.send(payload)
-    payload.ParseFromString(disconnection)
-
-    self.connection.close()
-
-    return disconnection
+    return payload
 
   def _parse(type, packet):
     data = type()
@@ -102,7 +95,7 @@ class Chat():
     elif self.packet.type == self.packet.CHAT:
       data = Chat._parse(self.packet.ChatPacket, data)
       print('\x1b[2K\x1b[1A')
-      print('[{}]: {}'.format(data.player.name, data.message))
+      print('{}: {}'.format(data.player.name, data.message))
       # return data#Chat._parse(self.packet.ChatPacket, data)
     elif self.packet.type == self.packet.PLAYER_LIST:
       data = Chat._parse(self.packet.PlayerListPacket, data)
@@ -114,4 +107,16 @@ class Chat():
       print()
       # return Chat._parse(self.packet.PlayerListPacket, data)
 
-    print('CHAT:{} > '.format(self.user.name), end='', flush=True)
+    print(self.prompt, end='', flush=True)
+
+  def _getInput(self):
+    stdin = input(self.prompt)
+    
+    if stdin == 'lp()':
+      data = self.getPlayerList()
+    elif stdin == 'exit()':
+      data = self.disconnect()
+    else:
+      data = self.sendChat(stdin)
+
+    return data
