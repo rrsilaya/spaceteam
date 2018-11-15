@@ -33,19 +33,33 @@ class Chat():
     payload.lobby_id = id
     payload.player.name = args[0] if args else 'anon'
 
-    lobby = self.connection.send(payload)
-    payload.ParseFromString(lobby)
-
     self.user = payload.player
     self.lobby = payload.lobby_id
     self.prompt = '[CHAT:{}]> '.format(self.user.name)
 
-    return payload.lobby_id
+    lobby = self.connection.send(payload)
+    self.packet.ParseFromString(lobby)
+
+    if self.packet.type == self.packet.CONNECT:
+      payload.ParseFromString(lobby)
+      return payload.lobby_id
+    elif self.packet.type == self.packet.ERR_LDNE:
+      payload = self.packet.ErrLdnePacket()
+      payload.ParseFromString(lobby)
+
+      print(payload.err_message)
+      sys.exit(1)
+    elif self.packet.type == self.packet.ERR_LFULL:
+      payload = self.packet.ErrLfullPacket()
+      payload.ParseFromString(lobby)
+
+      print(payload.err_message)
+      sys.exit(1)
 
   def listen(self):
     self.stream = Thread(target=self.connection.receive, args=[self._getInput, self._parsePacket])
     self.stream.start()
-    
+
     print(self.prompt, end='', flush=True)
 
   def sendChat(self, message):

@@ -32,8 +32,8 @@ class TcpConnection():
           elif packet == self._socket:
             data = self._socket.recv(BUFFER)
             receiver(data)
-      except OSError:
-        break
+      except:
+        self.close()
 
   def send(self, data):
     self._socket.send(data.SerializeToString())
