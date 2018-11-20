@@ -1,5 +1,5 @@
 from socket import AF_INET, socket, SOCK_STREAM
-from sys import stdin
+from sys import stdin, exit
 from select import select
 
 HOST = '202.92.144.45'
@@ -32,6 +32,10 @@ class TcpConnection():
           elif packet == self._socket:
             data = self._socket.recv(BUFFER)
             receiver(data)
+      except ConnectionResetError:
+        print('\nConnection reset by peer')
+        self.active = False
+        exit(1)
       except:
         self.close()
 
