@@ -2,8 +2,10 @@
 
 ### Installation
 #### Client
-1. Install all the dependencies with `yarn install` or `npm install`.
-2. Start the development server using `yarn start` or `npm start`.
+1. Inside the client directory, reate a virtual environment named `env` with `virtualenv env`. This will allow you to install dependencies on this local project.
+2. Activate the created virtual environment with `source env/bin/activate`.
+3. Install all dependencies with `pip install -r requirements.txt`.
+4. Deactivate the virtual environment with `deactivate`.
 
 #### Server
 1. Make sure `tkinter` is properly configured in your machine.
