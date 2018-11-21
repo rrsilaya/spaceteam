@@ -56,7 +56,9 @@ class Chat():
       print(payload.err_message)
       sys.exit(1)
 
-  def listen(self):
+  def listen(self, receiveCallback):
+    self.receiveCallback = receiveCallback
+
     self.stream = Thread(target=self.connection.receive, args=[self._getInput, self._parsePacket])
     self.stream.start()
 
@@ -110,6 +112,7 @@ class Chat():
       data = Chat._parse(self.packet.ChatPacket, data)
       print('\x1b[2K\x1b[1A')
       print('{}: {}'.format(data.player.name, data.message))
+      self.receiveCallback('{}: {}'.format(data.player.name, data.message))
       # return data#Chat._parse(self.packet.ChatPacket, data)
     elif self.packet.type == self.packet.PLAYER_LIST:
       data = Chat._parse(self.packet.PlayerListPacket, data)
@@ -122,6 +125,16 @@ class Chat():
       # return Chat._parse(self.packet.PlayerListPacket, data)
 
     print(self.prompt, end='', flush=True)
+
+  def _encode(self, stdin):
+    if stdin == 'lp()':
+      data = self.getPlayerList()
+    elif stdin == 'exit()':
+      data = self.disconnect()
+    else:
+      data = self.sendChat(stdin)
+
+    return data
 
   def _getInput(self):
     stdin = input(self.prompt)

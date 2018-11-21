@@ -45,6 +45,9 @@ class TcpConnection():
     res = self._socket.recv(BUFFER)
     return res
 
+  def asyncsend(self, data):
+    self._socket.send(data.SerializeToString())
+
   def close(self):
     self.active = False
     self._socket.shutdown(1)
