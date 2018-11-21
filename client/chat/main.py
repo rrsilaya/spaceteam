@@ -6,8 +6,7 @@ from connection import TcpConnection
 from proto.tcp_packet_pb2 import TcpPacket
 
 class Chat():
-  def __init__(self):#, gui):
-    # self._gui = gui;
+  def __init__(self):
     self.connection = TcpConnection()
     self.packet = TcpPacket()
 
@@ -87,7 +86,8 @@ class Chat():
     payload.player.name = self.user.name
     payload.player.id = self.user.id
 
-    return payload
+    self.connection.asyncsend(payload)
+    self.connection.close()
 
   def _parse(type, packet):
     data = type()
@@ -102,35 +102,38 @@ class Chat():
       data = Chat._parse(self.packet.DisconnectPacket, data)
       print('\x1b[2K\x1b[1A')
       print('{} has left the chat room'.format(data.player.name))
-      # return data
+
+      self.receiveCallback('')
+      self.receiveCallback('<{} has left the chat room>'.format(data.player.name))
+      self.receiveCallback('')
     elif self.packet.type == self.packet.CONNECT:
       data = Chat._parse(self.packet.ConnectPacket, data)
       print('\x1b[2K\x1b[1A')
       print('{} has joined the chat'.format(data.player.name))
-      # return data#Chat._parse(self.packet.ConnectPacket, data)
+
+      self.receiveCallback('')
+      self.receiveCallback('\n<{} has joined the chat>\n'.format(data.player.name))
+      self.receiveCallback('')
     elif self.packet.type == self.packet.CHAT:
       data = Chat._parse(self.packet.ChatPacket, data)
       print('\x1b[2K\x1b[1A')
       print('{}: {}'.format(data.player.name, data.message))
       self.receiveCallback('{}: {}'.format(data.player.name, data.message))
-      # return data#Chat._parse(self.packet.ChatPacket, data)
     elif self.packet.type == self.packet.PLAYER_LIST:
       data = Chat._parse(self.packet.PlayerListPacket, data)
       print('\x1b[2K\x1b[1A')
 
-      print('PLAYERS:', end=' ')
+      self.receiveCallback('')
+      self.receiveCallback('[PLAYER LIST]')
       for player in data.player_list:
-        print('[{}@{}]'.format(player.name, player.id), end=' ')
-      print()
-      # return Chat._parse(self.packet.PlayerListPacket, data)
-
+        self.receiveCallback('> {}@{}'.format(player.name, player.id))
+      self.receiveCallback('')
+      
     print(self.prompt, end='', flush=True)
 
   def _encode(self, stdin):
     if stdin == 'lp()':
       data = self.getPlayerList()
-    elif stdin == 'exit()':
-      data = self.disconnect()
     else:
       data = self.sendChat(stdin)
 

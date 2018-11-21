@@ -1,5 +1,6 @@
 import tkinter as tk
 from utils.fonts import _getFont
+from os import _exit
 
 class Screen(tk.Frame):
   def __init__(self, root):
@@ -8,6 +9,8 @@ class Screen(tk.Frame):
 
     self.message = tk.StringVar()
     self.root.chat.listen(self.receiveMessage)
+
+    self.root.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self._loadView()
 
@@ -20,6 +23,11 @@ class Screen(tk.Frame):
     data = self.root.chat._encode(message)
 
     self.root.chat.connection.asyncsend(data)
+
+  def handleWindowClose(self):
+    self.root.chat.disconnect()
+    self.root.destroy()
+    _exit(0)
 
   def _loadView(self):
     chatroom = tk.Label(
