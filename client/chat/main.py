@@ -21,7 +21,6 @@ class Chat():
 
     lobby = self.connection.send(payload)
     payload.ParseFromString(lobby)
-    print(payload.lobby_id)
 
     return payload.lobby_id
 
@@ -99,23 +98,27 @@ class Chat():
     if self.packet.type == self.packet.DISCONNECT:
       data = Chat._parse(self.packet.DisconnectPacket, data)
 
-      self.receiveCallback('<{} has left the chat room>'.format(data.player.name), color='red')
-      self.receiveCallback('')
+      self.receiveCallback('\n<', color='RED')
+      self.receiveCallback(data.player.name)
+      self.receiveCallback('> has left the chat room>\n\n', color='RED')
     elif self.packet.type == self.packet.CONNECT:
       data = Chat._parse(self.packet.ConnectPacket, data)
 
-      self.receiveCallback('\n<{} has joined the chat>\n'.format(data.player.name), color='green')
-      self.receiveCallback('')
+      self.receiveCallback('\n<', color='GREEN')
+      self.receiveCallback(data.player.name)
+      self.receiveCallback('> has joined the chat>\n\n', color='GREEN')
     elif self.packet.type == self.packet.CHAT:
       data = Chat._parse(self.packet.ChatPacket, data)
-      self.receiveCallback('{}: {}'.format(data.player.name, data.message))
+
+      self.receiveCallback(data.player.name + ': ', color='YELLOW')
+      self.receiveCallback(data.message + '\n')
     elif self.packet.type == self.packet.PLAYER_LIST:
       data = Chat._parse(self.packet.PlayerListPacket, data)
 
-      self.receiveCallback('[PLAYER LIST]', color='green')
+      self.receiveCallback('\n[PLAYER LIST]\n', color='GREEN')
       for player in data.player_list:
-        self.receiveCallback('> {}@{}'.format(player.name, player.id))
-      self.receiveCallback('')
+        self.receiveCallback('> {}@{}\n'.format(player.name, player.id))
+      self.receiveCallback('\n')
       
   def _encode(self, stdin):
     if stdin == '^players':

@@ -1,6 +1,8 @@
 import tkinter as tk
 import menu
+
 from utils.fonts import _getFont
+from chat.main import Chat
 
 class Main(tk.Frame):
   def __init__(self, root):
@@ -13,7 +15,12 @@ class Main(tk.Frame):
     self.root.changeScreen(menu.Connect)
 
   def createLobby(self):
-    self.root.changeScreen(menu.CreateLobby)
+    self.root.chat = Chat()
+
+    chatroom = self.root.chat.createLobby(5)
+    
+    self.root.chat.connect(chatroom, self.root.username)
+    self.root.changeScreen(menu.Lobby)
 
   def _loadView(self):
     connectToHost = tk.Button(

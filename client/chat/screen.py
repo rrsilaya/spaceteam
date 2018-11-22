@@ -8,19 +8,17 @@ class Screen(tk.Frame):
     self.root = root
 
     self.message = tk.StringVar()
-    self.messageCount = 0
     self.root.chat.listen(self.receiveMessage)
 
     self.root.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self._loadView()
 
-  def receiveMessage(self, data, color='white'):
-    self.messages.insert(tk.END, data)
-    self.messages.itemconfig(self.messageCount, fg=color)
+  def receiveMessage(self, data, color='WHITE'):
+    self.messages.config(state=tk.NORMAL)
+    self.messages.insert(tk.END, data, color)
     self.messages.yview(tk.END)
-
-    self.messageCount += 1
+    self.messages.config(state=tk.DISABLED)
 
   def sendMessage(self, event=None):
     message = self.message.get()
@@ -51,57 +49,24 @@ class Screen(tk.Frame):
       justify=tk.CENTER,
       font=_getFont('body')
     )
-    self.messages = tk.Listbox(
+    self.messages = tk.Text(
       self,
       bg='black',
       fg='white',
       borderwidth=0,
+      state=tk.DISABLED,
       highlightthickness=0,
       font=_getFont('body')
     )
 
-    inputField.bind('<Return>', self.sendMessage)
+    self.messages.tag_configure('WHITE', foreground='white')
+    self.messages.tag_configure('RED', foreground='red')
+    self.messages.tag_configure('GREEN', foreground='green')
+    self.messages.tag_configure('YELLOW', foreground='yellow')
 
     chatroom.place(x=0, y=20, width=300)
-    inputField.place(x=5, y=530, width=290, height=65)
     self.messages.place(x=5, y=60, width=290, height=450)
 
-# class Screen(tk.Frame):  
-#   def __init__(self, parent):
-#     self.frame = tk.Frame.__init__(self, parent, background='white')
-#     self.parent = parent
-
-#     self.message = tk.StringVar()
-#     self.message.set('Enter message here')
-
-#     self.chat = Chat(self)
-#     self.chat.prepareConnection();
-
-#     self._loadView()
-#     self.parent.protocol('WM_DELETE_WINDOW', self.handleClose);
-
-#   def appendMessage(self, data):
-#     self.msglist.insert(tk.END, data)
-
-#   def handleSendPayload(self, event=None):
-#     message = self.message.get()
-#     self.chat.sendPayload(message)
-#     self.message.set('')
-
-#   def handleClose(self, event=None):
-#     self.chat.closeConnection()
-#     self.parent.destroy()
-#     _exit(0)
-
-#   def _loadView(self):
-#     scrollbar = tk.Scrollbar(self)
-#     self.msglist = tk.Listbox(self, height=15, width=50, yscrollcommand=scrollbar.set)
-#     input_field = tk.Entry(self, textvariable=self.message)
-#     send_btn = tk.Button(self, text='Send', command=self.handleSendPayload)
-
-#     input_field.bind('<Return>', self.handleSendPayload)
-
-#     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-#     self.msglist.pack(side=tk.LEFT, fill=tk.BOTH)
-#     input_field.pack()
-#     send_btn.pack()
+    inputField.bind('<Return>', self.sendMessage)
+    inputField.place(x=5, y=530, width=290, height=65)
+    inputField.focus()
