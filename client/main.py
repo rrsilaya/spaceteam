@@ -10,7 +10,7 @@ class MainApplication(tk.Tk):
     self.chat = None
 
     self._screen = None
-    self.changeScreen(menu.Main)
+    self.changeScreen(menu.Username)
 
   def changeScreen(self, screen):
     next = screen(self)
