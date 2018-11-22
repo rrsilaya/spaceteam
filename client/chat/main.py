@@ -34,7 +34,6 @@ class Chat():
 
     self.user = payload.player
     self.lobby = payload.lobby_id
-    self.prompt = '[CHAT:{}]> '.format(self.user.name)
 
     lobby = self.connection.send(payload)
     self.packet.ParseFromString(lobby)
@@ -58,10 +57,8 @@ class Chat():
   def listen(self, receiveCallback):
     self.receiveCallback = receiveCallback
 
-    self.stream = Thread(target=self.connection.receive, args=[self._getInput, self._parsePacket])
+    self.stream = Thread(target=self.connection.receive, args=[self._parsePacket])
     self.stream.start()
-
-    print(self.prompt, end='', flush=True)
 
   def sendChat(self, message):
     payload = self.packet.ChatPacket()
@@ -100,52 +97,28 @@ class Chat():
 
     if self.packet.type == self.packet.DISCONNECT:
       data = Chat._parse(self.packet.DisconnectPacket, data)
-      print('\x1b[2K\x1b[1A')
-      print('{} has left the chat room'.format(data.player.name))
 
-      self.receiveCallback('')
-      self.receiveCallback('<{} has left the chat room>'.format(data.player.name))
+      self.receiveCallback('<{} has left the chat room>'.format(data.player.name), color='red')
       self.receiveCallback('')
     elif self.packet.type == self.packet.CONNECT:
       data = Chat._parse(self.packet.ConnectPacket, data)
-      print('\x1b[2K\x1b[1A')
-      print('{} has joined the chat'.format(data.player.name))
 
-      self.receiveCallback('')
-      self.receiveCallback('\n<{} has joined the chat>\n'.format(data.player.name))
+      self.receiveCallback('\n<{} has joined the chat>\n'.format(data.player.name), color='green')
       self.receiveCallback('')
     elif self.packet.type == self.packet.CHAT:
       data = Chat._parse(self.packet.ChatPacket, data)
-      print('\x1b[2K\x1b[1A')
-      print('{}: {}'.format(data.player.name, data.message))
       self.receiveCallback('{}: {}'.format(data.player.name, data.message))
     elif self.packet.type == self.packet.PLAYER_LIST:
       data = Chat._parse(self.packet.PlayerListPacket, data)
-      print('\x1b[2K\x1b[1A')
 
-      self.receiveCallback('')
-      self.receiveCallback('[PLAYER LIST]')
+      self.receiveCallback('[PLAYER LIST]', color='green')
       for player in data.player_list:
         self.receiveCallback('> {}@{}'.format(player.name, player.id))
       self.receiveCallback('')
       
-    print(self.prompt, end='', flush=True)
-
   def _encode(self, stdin):
-    if stdin == 'lp()':
+    if stdin == '^players':
       data = self.getPlayerList()
-    else:
-      data = self.sendChat(stdin)
-
-    return data
-
-  def _getInput(self):
-    stdin = input(self.prompt)
-    
-    if stdin == 'lp()':
-      data = self.getPlayerList()
-    elif stdin == 'exit()':
-      data = self.disconnect()
     else:
       data = self.sendChat(stdin)
 

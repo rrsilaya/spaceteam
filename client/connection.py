@@ -15,7 +15,7 @@ class TcpConnection():
 
     self._socket.connect(self.address)
 
-  def receive(self, sender, receiver):
+  def receive(self, receiver):
     self.active = True
 
     while self.active:
@@ -23,13 +23,7 @@ class TcpConnection():
         infds, outfds, errfds = select([0, self._socket], [], [])
         
         for packet in infds:
-          if packet == 0:
-            data = sender()
-            self._socket.send(data.SerializeToString())
-
-            if data.type == 0:
-              self.close()
-          elif packet == self._socket:
+          if packet == self._socket:
             data = self._socket.recv(BUFFER)
             receiver(data)
       except ConnectionResetError:

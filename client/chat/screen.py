@@ -8,15 +8,19 @@ class Screen(tk.Frame):
     self.root = root
 
     self.message = tk.StringVar()
+    self.messageCount = 0
     self.root.chat.listen(self.receiveMessage)
 
     self.root.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self._loadView()
 
-  def receiveMessage(self, data):
+  def receiveMessage(self, data, color='white'):
     self.messages.insert(tk.END, data)
+    self.messages.itemconfig(self.messageCount, fg=color)
     self.messages.yview(tk.END)
+
+    self.messageCount += 1
 
   def sendMessage(self, event=None):
     message = self.message.get()
