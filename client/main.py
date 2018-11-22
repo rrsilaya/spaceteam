@@ -7,11 +7,9 @@ class MainApplication(tk.Tk):
   def __init__(self):
     tk.Tk.__init__(self)
     self.title('Spaceteam')
+    self.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self.chat = None
-    self.createdLobby = None
-
-    self.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self._screen = None
     self.changeScreen(menu.Username)
