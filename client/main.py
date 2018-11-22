@@ -1,6 +1,7 @@
 import tkinter as tk
-
 import menu
+
+from os import _exit
 
 class MainApplication(tk.Tk):
   def __init__(self):
@@ -10,8 +11,14 @@ class MainApplication(tk.Tk):
     self.chat = None
     self.createdLobby = None
 
+    self.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
+
     self._screen = None
     self.changeScreen(menu.Username)
+
+  def handleWindowClose(self):
+    self.destroy()
+    _exit(0)
 
   def changeScreen(self, screen):
     next = screen(self)

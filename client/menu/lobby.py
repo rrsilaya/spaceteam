@@ -1,6 +1,8 @@
 import tkinter as tk
-
+import menu
 import chat
+
+from game import WaitingRoom
 
 class Lobby(tk.Frame):
   def __init__(self, root):
@@ -9,7 +11,17 @@ class Lobby(tk.Frame):
 
     self._loadView()
 
-  def _loadView(self):
-    chatbox = chat.Screen(self.root)
+  def exitLobby(self):
+    self.root.chat.disconnect()
+    self.root.chat = None
+    
+    self.chatbox.destroy()
+    self.game.destroy()
+    self.root.changeScreen(menu.Main)
 
-    chatbox.pack(side=tk.RIGHT)
+  def _loadView(self):
+    self.chatbox = chat.Screen(self.root)
+    self.game = WaitingRoom(self)
+
+    self.chatbox.pack(side=tk.RIGHT)
+    self.game.pack(side=tk.LEFT)
