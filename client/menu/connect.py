@@ -13,6 +13,8 @@ class Connect(tk.Frame):
     self.username = tk.StringVar()
     self._isConnecting = False
 
+    self.chatroom.set(self.root.createdLobby if self.root.createdLobby else '')
+
     self._loadView()
 
   def connectChat(self, event=None):
@@ -21,7 +23,8 @@ class Connect(tk.Frame):
 
     self._isConnecting = True
 
-    self.root.chat = Chat()
+    if not self.root.chat:
+      self.root.chat = Chat()
     lobby = self.root.chat.connect(chatroom, username if username != '' else 'anon')
 
     self._isConnecting = False

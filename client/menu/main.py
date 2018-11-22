@@ -9,17 +9,29 @@ class Main(tk.Frame):
 
     self._loadView()
 
-  def createNewGame(self):
+  def connectToHost(self):
     self.root.changeScreen(menu.Connect)
 
+  def createLobby(self):
+    self.root.changeScreen(menu.CreateLobby)
+
   def _loadView(self):
-    newGame = tk.Button(
+    connectToHost = tk.Button(
       self,
-      text='New Game',
+      text='Connect to Host',
       height=1,
       width=15,
       font=_getFont('title'),
-      command=self.createNewGame
+      command=self.connectToHost
+    )
+    hostGame = tk.Button(
+      self,
+      text='Host Game',
+      height=1,
+      width=15,
+      font=_getFont('title'),
+      command=self.createLobby
     )
 
-    newGame.pack()
+    hostGame.pack()
+    connectToHost.pack()

@@ -21,6 +21,7 @@ class Chat():
 
     lobby = self.connection.send(payload)
     payload.ParseFromString(lobby)
+    print(payload.lobby_id)
 
     return payload.lobby_id
 
