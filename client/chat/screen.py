@@ -16,6 +16,7 @@ class Screen(tk.Frame):
 
   def receiveMessage(self, data):
     self.messages.insert(tk.END, data)
+    self.messages.yview(tk.END)
 
   def sendMessage(self, event=None):
     message = self.message.get()
@@ -50,6 +51,7 @@ class Screen(tk.Frame):
       self,
       bg='black',
       fg='white',
+      borderwidth=0,
       highlightthickness=0,
       font=_getFont('body')
     )
