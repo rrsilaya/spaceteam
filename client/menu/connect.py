@@ -10,44 +10,35 @@ class Connect(tk.Frame):
     self.root = root
 
     self.chatroom = tk.StringVar()
-    self.username = tk.StringVar()
+    self.chatroom.trace('w', self._handleInputField)
     self._isConnecting = False
-
-    self.chatroom.set(self.root.createdLobby if self.root.createdLobby else '')
 
     self._loadView()
 
   def connectChat(self, event=None):
     chatroom = self.chatroom.get()
-    username = self.username.get()
+    username = self.root.username
 
     self._isConnecting = True
 
     if not self.root.chat:
       self.root.chat = Chat()
-    lobby = self.root.chat.connect(chatroom, username if username != '' else 'anon')
+    lobby = self.root.chat.connect(chatroom, username)
 
     self._isConnecting = False
     self.root.changeScreen(menu.Lobby)
 
+  def _handleInputField(self, *args):
+    value = self.chatroom.get()
+    limit = 10
+
+    self.chatroom.set(value.upper())
+    value = value.upper()
+
+    if len(value) > limit:
+      self.chatroom.set(value[:limit])
+
   def _loadView(self):
-    usernameField = tk.Entry(
-      self,
-      textvariable=self.username,
-      bg='black',
-      fg='white',
-      highlightcolor='white',
-      justify=tk.CENTER,
-      state=tk.NORMAL if not self._isConnecting else 'readonly',
-      font=_getFont('title2')
-    )
-    usernameLabel = tk.Label(
-      self,
-      text='USERNAME',
-      bg='black',
-      fg='white',
-      font=_getFont('body')
-    )
     roomIdField = tk.Entry(
       self,
       textvariable=self.chatroom,
@@ -60,7 +51,7 @@ class Connect(tk.Frame):
     )
     roomLabel = tk.Label(
       self,
-      text='ROOM ID',
+      text='ENTER ROOM ID',
       bg='black',
       fg='white',
       font=_getFont('body')
@@ -74,8 +65,9 @@ class Connect(tk.Frame):
       font=_getFont('title2')
     )
 
-    usernameLabel.place(x=500, y=205, anchor='center')
-    usernameField.place(x=500, y=155, height=60, anchor='center')
-    roomLabel.place(x=500, y=315, anchor='center')
-    roomIdField.place(x=500, y=265, height=60, anchor='center')
-    submit.place(x=500, y=405, height=60, width='430', anchor='center')
+    roomLabel.place(x=500, y=285, anchor='center')
+    roomIdField.place(x=500, y=235, height=60, anchor='center')
+    submit.place(x=500, y=345, height=60, width='430', anchor='center')
+
+    roomIdField.focus()
+    roomIdField.bind('<Return>', self.connectChat)

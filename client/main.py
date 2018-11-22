@@ -8,6 +8,7 @@ class MainApplication(tk.Tk):
     self.title('Spaceteam')
 
     self.chat = None
+    self.createdLobby = None
 
     self._screen = None
     self.changeScreen(menu.Username)
