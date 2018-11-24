@@ -3,6 +3,7 @@ import menu
 
 from utils.fonts import _getFont
 from chat.main import Chat
+from ui.button import Button
 
 class Main(tk.Frame):
   def __init__(self, root):
@@ -23,20 +24,14 @@ class Main(tk.Frame):
     self.root.changeScreen(menu.Lobby)
 
   def _loadView(self):
-    connectToHost = tk.Button(
+    connectToHost = Button(
       self,
       text='Connect to Host',
-      height=1,
-      width=15,
-      font=_getFont('title'),
       command=self.connectToHost
     )
-    hostGame = tk.Button(
+    hostGame = Button(
       self,
       text='Host Game',
-      height=1,
-      width=15,
-      font=_getFont('title'),
       command=self.createLobby
     )
 

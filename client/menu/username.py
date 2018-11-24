@@ -44,14 +44,6 @@ class Username(tk.Frame):
       font=_getFont('body')
     )
 
-    canvas = tk.Canvas(self, width=400, height=100, bg='red')
-    canvas.pack()
-
-    img = tk.PhotoImage(file='assets/ui/button.png')
-    canvas.img = img
-    canvas.create_image(0, 0, image=img, anchor=tk.NW)
-    canvas.create_text(0, 0, font=_getFont('title2'), text='Helloo', anchor=tk.NW)
-
     fieldLabel.place(x=500, y=335, anchor='center')
     inputField.place(x=500, y=285, height=60, anchor='center')
     inputField.focus()
