@@ -31,6 +31,7 @@ if __name__ == '__main__':
   app = MainApplication()
 
   app.geometry('1000x600')
+  app.wm_attributes("-transparent", 'magenta')
   app.resizable(0, 0)
 
   app.mainloop()

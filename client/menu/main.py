@@ -24,16 +24,22 @@ class Main(tk.Frame):
     self.root.changeScreen(menu.Lobby)
 
   def _loadView(self):
+    self.background = tk.PhotoImage(file='assets/background/main.png')
+    background = tk.Label(self, image=self.background)
+
     connectToHost = Button(
       self,
       text='Connect to Host',
+      bg='gray',
       command=self.connectToHost
     )
     hostGame = Button(
       self,
       text='Host Game',
+      bg='gray',
       command=self.createLobby
     )
 
-    hostGame.pack()
-    connectToHost.pack()
+    background.place(x=0, y=0, relwidth=1, relheight=1)
+    hostGame.place(x=500, y=350, anchor=tk.CENTER)
+    connectToHost.place(x=500, y=450, anchor=tk.CENTER)
