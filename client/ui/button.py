@@ -2,7 +2,7 @@ import tkinter as tk
 from utils.fonts import _getFont
 
 class Button(tk.Canvas):
-  def __init__(self, root, text, bg='black', command=None):
+  def __init__(self, root, text, bg='magenta', command=None):
     self._canvas = tk.Canvas.__init__(self, root, width=430, height=75, bd=0, highlightthickness=0, bg=bg)
     
     normal = tk.PhotoImage(file='assets/ui/button.png')
