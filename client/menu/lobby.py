@@ -9,6 +9,8 @@ class Lobby(tk.Frame):
     self.frame = tk.Frame.__init__(self, root, background='black')
     self.root = root
 
+    self.enableChat = self.root.enableChat
+
     self._loadView()
 
   def changeGameScreen(self, screen):

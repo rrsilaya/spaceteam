@@ -21,9 +21,10 @@ class Connect(tk.Frame):
 
     self._isConnecting = True
 
-    if not self.root.chat:
-      self.root.chat = Chat()
-    lobby = self.root.chat.connect(chatroom, username)
+    if self.root.enableChat:
+      if not self.root.chat:
+        self.root.chat = Chat()
+      lobby = self.root.chat.connect(chatroom, username)
 
     self._isConnecting = False
     self.root.changeScreen(menu.Lobby)
