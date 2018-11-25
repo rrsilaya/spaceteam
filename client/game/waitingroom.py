@@ -15,6 +15,9 @@ class WaitingRoom(tk.Canvas):
 
     self._loadView()
 
+  def exitLobby(self, event=None):
+    self.root.exitLobby()
+
   def incrementHold(self):
     self.create_rectangle(0, 335, 0, 339, fill='green', tags='LOADER')
 
@@ -44,9 +47,6 @@ class WaitingRoom(tk.Canvas):
   def toggleBeam_off(self, event=None):
     self.delete('BEAM_TOGGLED')
     self.isHold = False
-
-  def exitLobby(self, event=None):
-    print('Exit lobby')
 
   def _loadView(self):
     door_img = tk.PhotoImage(file='assets/elements/exitdoor.png')

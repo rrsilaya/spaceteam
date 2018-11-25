@@ -21,9 +21,11 @@ class Lobby(tk.Frame):
     self.game.pack(side=tk.LEFT)
 
   def exitLobby(self):
-    self.root.chat.disconnect()
-    self.root.chat = None
+    if self.enableChat and self.root.chat:
+      self.root.chat.disconnect()
+      self.root.chat = None
     
+    self.root.enableChat = True
     self.chatbox.destroy()
     self.game.destroy()
     self.root.changeScreen(menu.Main)
