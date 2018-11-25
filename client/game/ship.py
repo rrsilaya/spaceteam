@@ -12,12 +12,14 @@ class Ship(tk.Canvas):
     ship = tk.PhotoImage(file='assets/elements/ship-small.png')
     instruction = tk.PhotoImage(file='assets/elements/instruction.png')
     timer_empty = tk.PhotoImage(file='assets/elements/timer-empty.png')
+    space = tk.PhotoImage(file='assets/elements/space-top.png')
 
     self.ship = ship
     self.instruction = instruction.zoom(3).subsample(2)
     self.timer_empty = timer_empty.zoom(3).subsample(2)
+    self.space = space
 
-    self.create_rectangle(0, 0, 700, 100, fill='blue', outline='')
+    self.create_image(0, 0, image=self.space, anchor=tk.NW)
     self.create_image(400, 50, image=self.ship, tags='SHIP')
 
     # Instruction
