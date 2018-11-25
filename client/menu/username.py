@@ -17,7 +17,7 @@ class Username(tk.Frame):
     username = self.username.get()
     self.root.username = username
 
-    self.root.changeScreen(menu.Main)
+    self.root.changeScreen(menu.Welcome)
 
   def _restrictMaxChars(self, *args):
     limit = 18
