@@ -10,7 +10,6 @@ class Main(tk.Canvas):
     tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg='black')
     self.root = root
 
-    self.enableChat = True
     self.isHost = True
     self.dialRotation = 110
 
@@ -21,12 +20,12 @@ class Main(tk.Canvas):
   def toggleChat(self, event=None):
     self.delete('CHAT_SWITCH')
 
-    if self.enableChat:
+    if self.root.enableChat:
       self.create_image(70, 563, image=self.switch_off, anchor=tk.W, tags='CHAT_SWITCH')
     else:
       self.create_image(70, 563, image=self.switch_on, anchor=tk.W, tags='CHAT_SWITCH')
 
-    self.enableChat = not self.enableChat
+    self.root.enableChat = not self.root.enableChat
 
   def toggleMode(self, event=None):
     self.delete('MODE_SWITCH')

@@ -10,6 +10,7 @@ class MainApplication(tk.Tk):
     self.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self.chat = None
+    self.enableChat = True
 
     self._screen = None
     self.changeScreen(menu.Username)

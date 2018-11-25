@@ -7,7 +7,9 @@ class Screen(tk.Frame):
     self.root = root
 
     self.message = tk.StringVar()
-    self.root.chat.listen(self.receiveMessage)
+
+    if self.root.enableChat:
+      self.root.chat.listen(self.receiveMessage)
 
     self._loadView()
 
@@ -27,7 +29,10 @@ class Screen(tk.Frame):
   def _loadView(self):
     chatroom = tk.Label(
       self,
-      text='{} [{}]'.format(self.root.chat.lobby, self.root.chat.user.name),
+      text='CHAT DISABLED' if not self.root.enableChat else '{} [{}]'.format(
+        self.root.chat.lobby,
+        self.root.chat.user.name
+      ),
       bg='black',
       fg='white',
       font=_getFont('title3')
