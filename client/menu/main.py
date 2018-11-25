@@ -59,7 +59,7 @@ class Main(tk.Canvas):
 
     if self.dialRotation == 210:
       if self.isHost:
-        pass
+        self.root.changeScreen(menu.Connecting)
       else:
         self.root.changeScreen(menu.Connect)
 
