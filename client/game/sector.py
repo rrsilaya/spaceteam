@@ -3,6 +3,7 @@ import tkinter as tk
 from threading import Thread
 from utils.fonts import _getFont
 from time import sleep
+from game import Ship
 
 class Sector(tk.Canvas):
   def __init__(self, root):
@@ -18,6 +19,8 @@ class Sector(tk.Canvas):
       self.delete('SHIP')
       self.create_image(distance * 2, 50, image=self.ship, tags='SHIP')
       sleep(0.01)
+
+    self.root.changeGameScreen(Ship)
 
   def _loadView(self):
     ship = tk.PhotoImage(file='assets/elements/ship-small.png')
