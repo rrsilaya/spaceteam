@@ -53,6 +53,7 @@ class Main(tk.Canvas):
 
   def _loadView(self):
     logo = tk.PhotoImage(file='assets/ui/logo.png')
+    space = tk.PhotoImage(file='assets/elements/space-full.png')
     switch_off = tk.PhotoImage(file='assets/ui/horizontalswitch-off.png')
     switch_on = tk.PhotoImage(file='assets/ui/horizontalswitch-on.png')
     vswitch_off = tk.PhotoImage(file='assets/ui/verticalswitch-off.png')
@@ -60,6 +61,7 @@ class Main(tk.Canvas):
     dial = Image.open('assets/ui/dial.png')
 
     self.logo = logo
+    self.space = space
     self.switch_off = switch_off.subsample(2)
     self.switch_on = switch_on.subsample(2)
     self.vswitch_off = vswitch_off.subsample(2)
@@ -68,6 +70,7 @@ class Main(tk.Canvas):
     self.dial_image = dial.resize((int(dial.size[0] * 1.15), int(dial.size[1] * 1.15)))
     self.dial = ImageTk.PhotoImage(self.dial_image.rotate(110, expand=True))
 
+    self.create_image(0, 0, image=self.space, anchor=tk.NW)
     self.create_image(500, 150, image=self.logo)
     self.create_text(500, 250, text='SPACETEAM', fill='white', font=_getFont('heading-3x'))
     self.create_image(500, 430, image=self.dial, tags='DIAL')
