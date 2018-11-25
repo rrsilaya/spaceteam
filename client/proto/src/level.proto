@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+import "tool.proto";
+option java_package = "proto";
+option java_outer_classname = "LevelProtos";
+
+message Level {
+    required string id = 1
+    required int32 level = 2
+    required int32 capCommands = 3
+    repeated Tool tool_list = 4
+}

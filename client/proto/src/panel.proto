@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+import "tool.proto";
+option java_package = "proto";
+option java_outer_classname = "PanelProtos";
+
+message Panel {
+    required string id = 1
+    required string name = 2
+    required Tool tool = 3 
+}
