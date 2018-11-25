@@ -9,7 +9,10 @@ def _getFont(fontClass):
     'body': font.Font(family='Silom', size=12),
     'body2': font.Font(family='Silom', size=14),
     'body3': font.Font(family='Silom', size=16),
+    'body4': font.Font(family='Silom', size=22),
     'heading': font.Font(family='Gulkave', size=22),
+    'heading-2x': font.Font(family='Gulkave', size=26),
+    'heading-3x': font.Font(family='Gulkave', size=32),
   }
 
   return fonts[fontClass]
