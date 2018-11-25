@@ -13,35 +13,25 @@ class Main(tk.Canvas):
     self.isHost = True
     self.dialRotation = 110
 
-    self.dialClick = False
-
     self._loadView()
 
   def toggleChat(self, event=None):
-    self.delete('CHAT_SWITCH')
-
     if self.root.enableChat:
-      self.create_image(70, 563, image=self.switch_off, anchor=tk.W, tags='CHAT_SWITCH')
+      self.itemconfig('CHAT_SWITCH', image=self.switch_off)
     else:
-      self.create_image(70, 563, image=self.switch_on, anchor=tk.W, tags='CHAT_SWITCH')
+      self.itemconfig('CHAT_SWITCH', image=self.switch_on)
 
     self.root.enableChat = not self.root.enableChat
 
   def toggleMode(self, event=None):
-    self.delete('MODE_SWITCH')
-
     if self.isHost:
-      self.create_image(959, 35, image=self.vswitch_off, anchor=tk.N, tags='MODE_SWITCH')
+      self.itemconfig('MODE_SWITCH', image=self.vswitch_off)
     else:
-      self.create_image(959, 35, image=self.vswitch_on, anchor=tk.N, tags='MODE_SWITCH')
+      self.itemconfig('MODE_SWITCH', image=self.vswitch_on)
 
     self.isHost = not self.isHost
 
   def handleDial(self, event=None):
-    if not self.dialClick:
-      self.delete('DIAL')
-    self.dialClick = True
-
     range = (420, 575) # 155
     rotation = (110, -100) # 210deg
     self.dialRotation = int(((event.x - range[0]) / 155) * 210)
@@ -52,11 +42,9 @@ class Main(tk.Canvas):
       self.dialRotation = 210
 
     self.dial = ImageTk.PhotoImage(self.dial_image.rotate(rotation[0] - self.dialRotation, expand=True))
-    self.create_image(500, 430, image=self.dial, tags='DIAL')
+    self.itemconfig('DIAL', image=self.dial)
 
   def handleDialRelease(self, event=None):
-    self.dialClick = False
-
     if self.dialRotation == 210:
       if self.isHost:
         self.root.changeScreen(menu.Connecting)
