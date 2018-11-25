@@ -11,8 +11,7 @@ class Connecting(tk.Canvas):
     self._loadView()
 
   def toggleButton_on(self, event=None):
-    self.create_image(500, 370, image=self.button_toggle, tags='CANCEL')
-    self.create_text(500, 370, text='Cancel', fill='black', font=_getFont('title3'), tags='CANCEL_TEXT')
+    self.itemconfig('CANCEL', image=self.button_toggle)
   
   def toggleButton_off(self, event=None):
     self.root.changeScreen(menu.Main)

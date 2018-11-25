@@ -15,9 +15,8 @@ class Sector(tk.Canvas):
 
   def animateShip(self):
     sleep(0.5)
-    for distance in range(-30, 375):
-      self.delete('SHIP')
-      self.create_image(distance * 2, 50, image=self.ship, tags='SHIP')
+    for distance in range(405):
+      self.move('SHIP', 2, 0)
       sleep(0.01)
 
     self.root.changeGameScreen(Ship)

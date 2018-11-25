@@ -38,14 +38,14 @@ class WaitingRoom(tk.Canvas):
       self.root.changeGameScreen(Sector)
 
   def toggleBeam_on(self, event=None):
-    self.create_image(350, 450, image=self.beam_toggled, tags='BEAM_TOGGLED')
+    self.itemconfig('BEAM', image=self.beam_toggled)
     
     self.isHold = True
     hold = Thread(target=self.incrementHold)
     hold.start()
 
   def toggleBeam_off(self, event=None):
-    self.delete('BEAM_TOGGLED')
+    self.itemconfig('BEAM', image=self.beam)
     self.isHold = False
 
   def _loadView(self):
