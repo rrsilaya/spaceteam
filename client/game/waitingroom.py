@@ -1,12 +1,14 @@
 import tkinter as tk
 
 from utils.fonts import _getFont
+from game.sector import Sector
 from threading import Thread
 from time import sleep
 
 class WaitingRoom(tk.Canvas):
   def __init__(self, root):
     tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg='#111111')
+    self.root = root
 
     self.hold = 0
     self.isHold = False
@@ -29,6 +31,8 @@ class WaitingRoom(tk.Canvas):
         self.hold -= 1
         self.delete('LOADER')
         self.create_rectangle(0, 335, (self.hold / 40.0) * 700, 339, fill='green', tags='LOADER')
+    else:
+      self.root.changeGameScreen(Sector)
 
   def toggleBeam_on(self, event=None):
     self.create_image(350, 450, image=self.beam_toggled, tags='BEAM_TOGGLED')
