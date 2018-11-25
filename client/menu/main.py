@@ -14,6 +14,8 @@ class Main(tk.Canvas):
     self.isHost = True
     self.dialRotation = 110
 
+    self.dialClick = False
+
     self._loadView()
 
   def toggleChat(self, event=None):
@@ -37,6 +39,10 @@ class Main(tk.Canvas):
     self.isHost = not self.isHost
 
   def handleDial(self, event=None):
+    if not self.dialClick:
+      self.delete('DIAL')
+    self.dialClick = True
+
     range = (420, 575) # 155
     rotation = (110, -100) # 210deg
     self.dialRotation = int(((event.x - range[0]) / 155) * 210)
@@ -50,6 +56,8 @@ class Main(tk.Canvas):
     self.create_image(500, 430, image=self.dial, tags='DIAL')
 
   def handleDialRelease(self, event=None):
+    self.dialClick = False
+
     if self.dialRotation == 210:
       if self.isHost:
         pass
