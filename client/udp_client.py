@@ -4,16 +4,27 @@ TCP_PORT = 80
 UDP_PORT = 3003
 BUFFER = 4096
 
-Message = "Hello server"
-encodedMessage = str.encode(Message)
-_socket = socket(AF_INET, SOCK_DGRAM)
+class UDPClient():
+	def __init__(self):
+		self.address = (HOST, UDP_PORT)
+		self._socket = socket(AF_INET, SOCK_DGRAM)
+		self._socket.connect(self.address)
 
-_socket.sendto(encodedMessage, (HOST, UDP_PORT))
-
-msgFromServer = _socket.recvfrom(BUFFER)
-
+	def send(self,data):
+		encodedMessage = str.encode(data)
+		self._socket.sendto(encodedMessage, self.address)
+		msg = self.receive()
+		print(msg)
+	def receive(self):
+		msgFromServer = self._socket.recvfrom(BUFFER)
+		return msgFromServer
  
 
-msg = "Message from Server {}".format(msgFromServer[0])
-
-print(msg)
+#msg = "Message from Server {}".format(msgFromServer[0])
+if __name__ == "__main__":
+	client = UDPClient()
+	while (True):
+		message = input(">game:	")
+		client.send(message)
+		if message == "q":
+			break
