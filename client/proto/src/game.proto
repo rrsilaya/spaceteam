@@ -1,14 +1,14 @@
 syntax = "proto2";
 
 import "player.proto";
+import "level.proto";
 option java_package = "proto";
 option java_outer_classname = "GameProtos";
 
 message Game {
-    required string id = 1
-    required int32 life = 2
-    required Level level = 3
-    required int32 maxPlayers = 4
-    repeated Player player_list = 5
-    
+    required string id = 1;
+    required int32 life = 2;
+    required Level level = 3;
+    required int32 maxPlayers = 4;
+    repeated Player player_list = 5;   
 }

@@ -5,7 +5,7 @@ option java_package = "proto";
 option java_outer_classname = "CommandProtos";
 
 message Command {
-    required string id = 1
+    required string id = 1;
     required string command = 2;
-    required Timer timer = 3
+    required Timer timer = 3;
 }

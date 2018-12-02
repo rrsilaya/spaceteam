@@ -5,7 +5,7 @@ option java_package = "proto";
 option java_outer_classname = "ToolProtos";
 
 message Tool {
-    required string id = 1
-    required string name = 2
-    repeated Panel panel_list = 3 
+    required string id = 1;
+    required string name = 2;
+    repeated Panel panel_list = 3;
 }
