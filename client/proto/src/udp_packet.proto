@@ -1,0 +1,39 @@
+syntax = "proto2";
+
+import proto.player_pb2;
+option java_package = "proto";
+option java_outer_classname = "UdpPacketProtos";
+
+message UdpPacket{
+	enum PacketType {
+		LEAVE = 0;
+		JOIN = 1;
+		CREATE_LOBBY = 2;
+		PLAY = 3;
+		PLAYER_LIST = 4;
+		ERR_LDNE = 5;
+		ERR_LFULL= 6;
+		ERR = 7;
+  }
+
+	required PacketType type = 1;
+
+	message JoinPacket{
+
+	}
+
+	message PlayerListPacket {
+		required PacketType type = 1;
+		repeated Player player_list = 1;
+	}
+
+  message ErrLfullPacket {
+    required PacketType type = 1;
+    optional string err_message = 2;
+  }
+
+	message ErrPacket {
+    required PacketType type = 1;
+    optional string err_message = 2;
+  }
+}
