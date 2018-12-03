@@ -23,7 +23,7 @@ class Connecting(tk.Canvas):
     Thread(target=self._hostConnect).start()
 
   def _hostConnect(self):
-    if self.chatroom:
+    if not self.chatroom:
       self.chatroom = self.root.chat.createLobby(6)
       self.root.chat.connect(self.chatroom, self.root.username)
     
