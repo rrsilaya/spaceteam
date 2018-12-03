@@ -1,6 +1,8 @@
 import tkinter as tk
 import menu
 
+from chat import Chat
+from threading import Thread
 from utils import _getFont
 
 class Connecting(tk.Canvas):
@@ -8,7 +10,25 @@ class Connecting(tk.Canvas):
     tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg='black')
     self.root = root
 
+    self.chatroom = None
+
     self._loadView()
+    self.hostLobby()
+
+  def hostLobby(self):
+    if self.root.enableChat:
+      if not self.root.chat:
+        self.root.chat = Chat()
+
+      Thread(target=self._hostConnect).start()
+
+  def _hostConnect(self):
+    self.chatroom = self.root.chat.createLobby(6)
+
+    if self.chatroom:
+      self.root.chat.connect(self.chatroom, self.root.username)
+      self.root.changeScreen(menu.Lobby)
+
 
   def toggleButton_on(self, event=None):
     self.itemconfig('CANCEL', image=self.button_toggle)

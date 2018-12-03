@@ -21,7 +21,7 @@ class Welcome(tk.Canvas):
       sleep(1)
       self.time += 1
 
-    self.root.changeScreen(menu.Main)
+    self.root.changeScreen(menu.GetIp)
 
   def _loadView(self):
     players = tk.PhotoImage(file='assets/elements/howtoplay.png')
