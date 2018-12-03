@@ -20,14 +20,14 @@ class Connecting(tk.Canvas):
       if not self.root.chat:
         self.root.chat = Chat()
 
-      Thread(target=self._hostConnect).start()
+    Thread(target=self._hostConnect).start()
 
   def _hostConnect(self):
-    self.chatroom = self.root.chat.createLobby(6)
-
     if self.chatroom:
+      self.chatroom = self.root.chat.createLobby(6)
       self.root.chat.connect(self.chatroom, self.root.username)
-      self.root.changeScreen(menu.Lobby)
+    
+    self.root.changeScreen(menu.Lobby)
 
 
   def toggleButton_on(self, event=None):
