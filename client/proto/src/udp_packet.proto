@@ -38,14 +38,15 @@ message UdpPacket{
 
 	message JoinPacket{
     required PacketType type = 1;
-    required Player player_list = 2;
-    optional string room_id  = 3;
+		required string room_id = 2;
+    required Player player = 3;
 	}
 
 
 	message PlayerListPacket {
 		required PacketType type = 1;
-		repeated Player player_list = 2;
+		required string room_id = 2;
+		repeated Player player_list = 3;
 	}
 
   message ErrLfullPacket {

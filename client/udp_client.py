@@ -16,11 +16,7 @@ class UDPClient():
 		self.packet = UdpPacket()
 
 	def send(self,data):
-		self._socket.sendto(encodedMessage, self.address)
-
-	def receive(self):
-		msgFromServer = self._socket.recvfrom(BUFFER)
-		return msgFromServer
+		self._socket.sendto(data, self.address) 
 
 	def connect(self, playerName):
 		payload = self.packet.ConnectPacket()
@@ -30,8 +26,8 @@ class UDPClient():
 		self.user = payload.player.name
 		payload = payload.SerializeToString()
 
-		self._socket.send(payload)	
-	
+		self.send(payload)	
+
 	def createRoom(self,roomId, maxPlayers):
 		payload = self.packet.CreateRoomPacket()
 		payload.type = self.packet.CREATE_ROOM
@@ -40,19 +36,32 @@ class UDPClient():
 		payload.player.name = self.user
 
 		payload = payload.SerializeToString()
-		self._socket.send(payload)
+		self.send(payload)
+
+		self.join(roomId)
 		
+	def join(self, roomId):
+		payload = self.packet.JoinPacket()
+		payload.type = self.packet.JOIN
+		payload.room_id = roomId
+		payload.player.name = self.user
 
-	'''
-	def join():
-		return 0
+		payload = payload.SerializeToString()
+		self.send(payload)
 
+	def getPlayers(self,roomId):
+		payload = self.packet.PlayerListPacket()
+		payload.type = self.packet.PLAYER_LIST
+		payload.room_id = roomId
+
+		payload = payload.SerializeToString()
+		self.send(payload)
+
+'''
 	def leave():
 		return 0
 	
-	def getPlayers():
-		return 0
-		msgFromServer = self._socket.recvfrom(BUFFER)
+
  '''
 
 if __name__ == "__main__":
@@ -65,4 +74,12 @@ if __name__ == "__main__":
 			roomId = input(">roomId: ")
 			maxPlayers = 3
 			client.createRoom(roomId,maxPlayers)
-			
+		elif message == "join room":
+			roomId = input(">roomId: ")
+			client.join(roomId)
+		elif message == "get players":
+			roomId = input(">roomId: ")
+			client.getPlayers(roomId)
+		elif message == "q":
+			self._socket.close()
+			break

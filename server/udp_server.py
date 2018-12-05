@@ -27,30 +27,52 @@ class UDPServer():
 		while True:
 			data, addr = self._socket.recvfrom(BUFFER)
 			self.packet.ParseFromString(data)
-			print(self.packet.type)
+
 			if self.packet.type == self.packet.CONNECT:
 				packet = self.packet.ConnectPacket()
 				packet.ParseFromString(data)
 
 				print(packet.player.name + " connected to the server")
 
+				packet.player.id = str(addr[1])
+
 
 			elif self.packet.type == self.packet.CREATE_ROOM:
-				print(self.rooms)
 				packet = self.packet.CreateRoomPacket()
 				packet.ParseFromString(data)
-				print(packet)
+
 				roomId=packet.room_id
-				self.rooms[roomId] = packet
+
+				self.rooms[roomId] = []
+
 				print (packet.player.name + ' has created a room')
-				print(self.rooms)
+
+			#elif data.PacketType == 'LEAVE':
+			elif self.packet.type == self.packet.JOIN:
+				packet = self.packet.JoinPacket()
+				packet.ParseFromString(data)
+				
+				roomId=packet.room_id
+
+				self.rooms[roomId].append(packet.player)
+
+				print(packet.player.name + ' has joined room' + roomId)
+				print(self.rooms)		
+
+			elif self.packet.type == self.packet.PLAYER_LIST:
+				packet = self.packet.PlayerListPacket()
+				packet.ParseFromString(data)
+
+				roomId = packet.room_id
+				
+				for player in self.rooms[roomId]:
+					packet_player = packet.player_list.add()
+					packet_player.name = player.name
+					print(player)
 
 			'''
-			elif data.PacketType == 'LEAVE':
-			elif data.PacketType == 'JOIN':
 			elif data.PacketType == 'PLAY':
 				print("Not yet implemented")
-			elif data.PacketType == 'PLAYER_LIST':
 			elif data.PacketType == 'ERR_RDNE':
 				print("Room does not exist")
 			elif data.PacketType == 'ERR_RFULL':
@@ -66,6 +88,8 @@ class UDPServer():
 	
 	
 
+	def send(self,data,address):
+		self._socket.sendto(data, address)
 
 	def stop(self):
 		self._socket.close()

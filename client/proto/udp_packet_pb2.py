@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='udp_packet.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x10udp_packet.proto\x1a\x0cplayer.proto\"\x93\x06\n\tUdpPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x1aM\n\rConnectPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x17\n\x06player\x18\x02 \x01(\x0b\x32\x07.Player\x1av\n\x10\x43reateRoomPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x0f\n\x07room_id\x18\x02 \x01(\t\x12\x13\n\x0bmax_players\x18\x03 \x01(\x05\x12\x17\n\x06player\x18\x04 \x02(\x0b\x32\x07.Player\x1aK\n\x0bLeavePacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x17\n\x06player\x18\x02 \x01(\x0b\x32\x07.Player\x1a`\n\nJoinPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x1c\n\x0bplayer_list\x18\x02 \x02(\x0b\x32\x07.Player\x12\x0f\n\x07room_id\x18\x03 \x01(\t\x1aU\n\x10PlayerListPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x1c\n\x0bplayer_list\x18\x02 \x03(\x0b\x32\x07.Player\x1aJ\n\x0e\x45rrLfullPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x13\n\x0b\x65rr_message\x18\x02 \x01(\t\x1a\x45\n\tErrPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x13\n\x0b\x65rr_message\x18\x02 \x01(\t\"\x80\x01\n\nPacketType\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0f\n\x0b\x43REATE_ROOM\x10\x01\x12\t\n\x05LEAVE\x10\x02\x12\x08\n\x04JOIN\x10\x03\x12\x08\n\x04PLAY\x10\x04\x12\x0f\n\x0bPLAYER_LIST\x10\x05\x12\x0c\n\x08\x45RR_RDNE\x10\x06\x12\r\n\tERR_RFULL\x10\x07\x12\x07\n\x03\x45RR\x10\x08\x42\x18\n\x05protoB\x0fUdpPacketProtos')
+  serialized_pb=_b('\n\x10udp_packet.proto\x1a\x0cplayer.proto\"\x9f\x06\n\tUdpPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x1aM\n\rConnectPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x17\n\x06player\x18\x02 \x01(\x0b\x32\x07.Player\x1av\n\x10\x43reateRoomPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x0f\n\x07room_id\x18\x02 \x01(\t\x12\x13\n\x0bmax_players\x18\x03 \x01(\x05\x12\x17\n\x06player\x18\x04 \x02(\x0b\x32\x07.Player\x1aK\n\x0bLeavePacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x17\n\x06player\x18\x02 \x01(\x0b\x32\x07.Player\x1a[\n\nJoinPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x0f\n\x07room_id\x18\x02 \x02(\t\x12\x17\n\x06player\x18\x03 \x02(\x0b\x32\x07.Player\x1a\x66\n\x10PlayerListPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x0f\n\x07room_id\x18\x02 \x02(\t\x12\x1c\n\x0bplayer_list\x18\x03 \x03(\x0b\x32\x07.Player\x1aJ\n\x0e\x45rrLfullPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x13\n\x0b\x65rr_message\x18\x02 \x01(\t\x1a\x45\n\tErrPacket\x12#\n\x04type\x18\x01 \x02(\x0e\x32\x15.UdpPacket.PacketType\x12\x13\n\x0b\x65rr_message\x18\x02 \x01(\t\"\x80\x01\n\nPacketType\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0f\n\x0b\x43REATE_ROOM\x10\x01\x12\t\n\x05LEAVE\x10\x02\x12\x08\n\x04JOIN\x10\x03\x12\x08\n\x04PLAY\x10\x04\x12\x0f\n\x0bPLAYER_LIST\x10\x05\x12\x0c\n\x08\x45RR_RDNE\x10\x06\x12\r\n\tERR_RFULL\x10\x07\x12\x07\n\x03\x45RR\x10\x08\x42\x18\n\x05protoB\x0fUdpPacketProtos')
   ,
   dependencies=[player__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -72,8 +72,8 @@ _UDPPACKET_PACKETTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=694,
-  serialized_end=822,
+  serialized_start=706,
+  serialized_end=834,
 )
 _sym_db.RegisterEnumDescriptor(_UDPPACKET_PACKETTYPE)
 
@@ -218,16 +218,16 @@ _UDPPACKET_JOINPACKET = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='player_list', full_name='UdpPacket.JoinPacket.player_list', index=1,
-      number=2, type=11, cpp_type=10, label=2,
-      has_default_value=False, default_value=None,
+      name='room_id', full_name='UdpPacket.JoinPacket.room_id', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='room_id', full_name='UdpPacket.JoinPacket.room_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='player', full_name='UdpPacket.JoinPacket.player', index=2,
+      number=3, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -244,7 +244,7 @@ _UDPPACKET_JOINPACKET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=361,
-  serialized_end=457,
+  serialized_end=452,
 )
 
 _UDPPACKET_PLAYERLISTPACKET = _descriptor.Descriptor(
@@ -262,8 +262,15 @@ _UDPPACKET_PLAYERLISTPACKET = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='player_list', full_name='UdpPacket.PlayerListPacket.player_list', index=1,
-      number=2, type=11, cpp_type=10, label=3,
+      name='room_id', full_name='UdpPacket.PlayerListPacket.room_id', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='player_list', full_name='UdpPacket.PlayerListPacket.player_list', index=2,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -280,8 +287,8 @@ _UDPPACKET_PLAYERLISTPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=459,
-  serialized_end=544,
+  serialized_start=454,
+  serialized_end=556,
 )
 
 _UDPPACKET_ERRLFULLPACKET = _descriptor.Descriptor(
@@ -317,8 +324,8 @@ _UDPPACKET_ERRLFULLPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=546,
-  serialized_end=620,
+  serialized_start=558,
+  serialized_end=632,
 )
 
 _UDPPACKET_ERRPACKET = _descriptor.Descriptor(
@@ -354,8 +361,8 @@ _UDPPACKET_ERRPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=622,
-  serialized_end=691,
+  serialized_start=634,
+  serialized_end=703,
 )
 
 _UDPPACKET = _descriptor.Descriptor(
@@ -386,7 +393,7 @@ _UDPPACKET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=35,
-  serialized_end=822,
+  serialized_end=834,
 )
 
 _UDPPACKET_CONNECTPACKET.fields_by_name['type'].enum_type = _UDPPACKET_PACKETTYPE
@@ -399,7 +406,7 @@ _UDPPACKET_LEAVEPACKET.fields_by_name['type'].enum_type = _UDPPACKET_PACKETTYPE
 _UDPPACKET_LEAVEPACKET.fields_by_name['player'].message_type = player__pb2._PLAYER
 _UDPPACKET_LEAVEPACKET.containing_type = _UDPPACKET
 _UDPPACKET_JOINPACKET.fields_by_name['type'].enum_type = _UDPPACKET_PACKETTYPE
-_UDPPACKET_JOINPACKET.fields_by_name['player_list'].message_type = player__pb2._PLAYER
+_UDPPACKET_JOINPACKET.fields_by_name['player'].message_type = player__pb2._PLAYER
 _UDPPACKET_JOINPACKET.containing_type = _UDPPACKET
 _UDPPACKET_PLAYERLISTPACKET.fields_by_name['type'].enum_type = _UDPPACKET_PACKETTYPE
 _UDPPACKET_PLAYERLISTPACKET.fields_by_name['player_list'].message_type = player__pb2._PLAYER
