@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+option java_package = "proto";
+option java_outer_classname = "TcpPacketProtos";
+
+message SpaceteamPacket {
+  enum PacketType {
+    GAME_STATE = 0;
+    CONNECT = 1;
+    READY = 2;
+    DISCONNECT = 3;
+  }
+
+  required PacketType type = 1;
+
+  message GameStatePacket {
+    enum Update {
+      CONNECT = 0;
+      DISCONNECT = 1;
+    }
+
+    required PacketType type = 1;
+    optional int32 player_count = 2;
+    required GameStatePacket.Update update = 3;
+  }
+
+  message ConnectPacket {
+    required PacketType type = 1;
+    required string lobby_id = 2;
+  }
+
+  message ReadyPacket {
+    required PacketType type = 1;
+    required bool toggle = 2;
+    optional string player_id = 3;
+  }
+
+  message DisconnectPacket {
+    required PacketType type = 1;
+  }
+}
