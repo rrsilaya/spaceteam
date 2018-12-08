@@ -22,7 +22,7 @@ class App:
     data = App._parse(self.packet.ConnectPacket, data)
       
     if not data.lobby_id in self.games:
-      self.games[data.lobby_id] = SpaceTeam(data.lobby_id)
+      self.games[data.lobby_id] = SpaceTeam(data.lobby_id, self)
 
     # Add to room
     # @TODO: Avoid duplicates and limit with number of players
@@ -76,7 +76,7 @@ class App:
     if data.toggle: print('[READY] Player {} is ready!'.format(port))
     else: print('[READY] Player {} is not ready!'.format(port))
 
-    if ready and len(self.games[lobby_id].players) > 1:
+    if ready:# and len(self.games[lobby_id].players) > 1:
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.sector = 1
@@ -88,9 +88,12 @@ class App:
         args=[
           lobby_id,
           self.games[lobby_id].players,
-          100,
+          30
         ],
-        kwargs={'screen': self.packet.GameStatePacket.SECTOR}
+        kwargs={
+          'screen': self.packet.GameStatePacket.SECTOR,
+          'callback': self.games[lobby_id].start
+        }
       ).start()
 
   def _clockTick(self, lobby, address, time, **kw):

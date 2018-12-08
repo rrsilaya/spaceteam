@@ -9,6 +9,7 @@ message SpaceteamPacket {
     CONNECT = 1;
     READY = 2;
     DISCONNECT = 3;
+    COMMAND = 4;
   }
 
   required PacketType type = 1;
@@ -49,5 +50,11 @@ message SpaceteamPacket {
 
   message DisconnectPacket {
     required PacketType type = 1;
+  }
+
+  message CommandPacket {
+    required PacketType type = 1;
+    required string panel = 2;
+    required string command = 3;
   }
 }

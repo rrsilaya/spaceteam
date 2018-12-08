@@ -1,3 +1,8 @@
+import random
+from time import sleep
+from proto.spaceteam_pb2 import SpaceteamPacket
+from threading import Thread
+
 TOGGLE = 0
 NUMERIC = 1
 CHOICE = 2
@@ -21,7 +26,7 @@ class types:
   ALTITUDE_OPERATOR = 14
 
 class Command:
-  def __init__(self, type):
+  def __init__(self, type, server, **kw):
     if type == types.CALCIUM_RAZOR:
       self._setInit(
         'Calcium Razor',
@@ -118,17 +123,64 @@ class Command:
         CHOICE
       )
 
-    self.state = states[0]
+    self.server = server
+    self.packet = SpaceteamPacket()
+    self.state = self.states[0]
+    self.time = 0
+    self.isResolved = True
+    self.callbacks = kw
 
   def _setInit(self, name, states, type, **kw):
     self.name = name
     self.states = states
     self.type = type
-    
-    if 'choices' in kw:
-      self.choices = choices
+    self.choices = kw['choices'] if 'choices' in kw else None
 
   def changeState(self, state):
     if state in self.states:
       self.state = state
+
+  def getRandomCommand(self):
+    command = random.randrange(len(self.states))
+
+    while self.type != CHOICE and command == self.state:
+      command = random.randrange(len(self.states))
+
+    self.command = self.choices[command] if self.choices else self.states[command]
+    return str(command)
+
+  def tick(self, address):
+    payload = self.packet.GameStatePacket()
+    payload.type = self.packet.GAME_STATE
+    payload.clock = self.time
+    payload.update = self.packet.GameStatePacket.CLOCK_TICK
+    payload.screen = self.packet.GameStatePacket.SHIP
+
+    self.server.connection.send(address, payload)
+    while self.time > 0 and not self.isResolved:
+      self.time -= 1
+      payload.clock = self.time
+
+      self.server.connection.send(address, payload)
+      sleep(0.1)
+
+    if not self.isResolved:
+      print('Failed to execute command <{}: {}>'.format(self.name, self.command))
+      self.callbacks['updateLife'](-25)
+      self.isResolved = True
+
+  def spawn(self, address):
+    self.isResolved = False
+    self.time = 50
+    self.command = self.getRandomCommand()
+
+    payload = self.packet.CommandPacket()
+    payload.type = self.packet.COMMAND
+    payload.panel = self.name
+    payload.command = self.command
+
+    print('> {}: {}'.format(self.name, payload.command))
+
+    self.server.connection.send(address, payload)
+    Thread(target=self.tick, args=[address]).start()
 
