@@ -17,11 +17,23 @@ message SpaceteamPacket {
     enum Update {
       CONNECT = 0;
       DISCONNECT = 1;
+      SECTOR = 2;
+      CLOCK_TICK = 3;
+    }
+
+    enum Screen {
+      LOBBY = 0;
+      SECTOR_WAIT = 1;
+      SHIP_WAIT = 2;
+      SHIP = 3;
     }
 
     required PacketType type = 1;
     optional int32 player_count = 2;
-    required GameStatePacket.Update update = 3;
+    optional int32 sector = 3;
+    optional int32 clock = 4;
+    required GameStatePacket.Update update = 5;
+    optional GameStatePacket.Screen screen = 6;
   }
 
   message ConnectPacket {

@@ -1,41 +1,133 @@
-from socket import AF_INET, socket, SOCK_DGRAM
+from server import UdpServer, SpaceTeam
+from proto.spaceteam_pb2 import SpaceteamPacket
+from time import sleep
 from threading import Thread
 
-HOST = '127.0.0.1'
-PORT = 3003
-BUFFER = 4096
-
-class UdpServer:
+class App:
   def __init__(self):
-    self.address = (HOST, PORT)
+    self.connection = UdpServer()
+    self.packet = SpaceteamPacket()
 
-    self._socket = socket(AF_INET, SOCK_DGRAM)
-    self._socket.bind(self.address)
+    self.players = {}
+    self.games = {}
 
-    self.active = True
+  def _parse(type, packet):
+    data = type()
+    data.ParseFromString(packet)
 
-  def send(self, address, data):
-    self._socket.sendto(data.SerializeToString(), address)
+    return data
 
-  def broadcast(self, room, data):
-    payload = data.SerializeToString()
+  def _handleConnect(self, data, address):
+    ip_addr, port = address
+    data = App._parse(self.packet.ConnectPacket, data)
+      
+    if not data.lobby_id in self.games:
+      self.games[data.lobby_id] = SpaceTeam(data.lobby_id)
 
-    for player in room:
-      self._socket.sendto(payload, (player['ip_addr'], player['port']))
+    # Add to room
+    # @TODO: Avoid duplicates and limit with number of players
+    self.games[data.lobby_id].addPlayer(address)
 
-  def _receive(self):
-    while self.active:
-      # try:
-        data, address = self._socket.recvfrom(BUFFER)
+    payload = self.packet.GameStatePacket()
+    payload.type = self.packet.GAME_STATE
+    payload.player_count = len(self.games[data.lobby_id].players)
+    payload.update = self.packet.GameStatePacket.CONNECT
+    payload.screen = self.packet.GameStatePacket.LOBBY
 
-        self.recvCallback(data, address)
-      # except Exception as e:
-      #   print('An error occured')
-      #   print(e)
-      #   break
+    self.connection.broadcast(self.games[data.lobby_id].players, payload)
 
-  def listen(self, recvCallback):
-    self.recvCallback = recvCallback
+    self.players[SpaceTeam.getPlayerId(address)] = data.lobby_id
+    print('[CONNECT] New player connected to lobby!')
 
-    print('Server is listening to port %d\n' % PORT)
-    Thread(target=self._receive).start()
+  def _handleDisconnect(self, data, address):
+    ip_addr, port = address
+    data = App._parse(self.packet.ConnectPacket, data)
+
+    player = SpaceTeam.getPlayerId(address)
+    lobby_id = self.players[player]
+
+    self.games[lobby_id].removePlayer(address)
+
+    if player in self.players:
+      payload = self.packet.GameStatePacket()
+      payload.type = self.packet.GAME_STATE
+      payload.player_count = len(self.games[lobby_id].players)
+      payload.update = self.packet.GameStatePacket.DISCONNECT
+
+      self.connection.broadcast(self.games[lobby_id].players, payload)
+
+      del(self.players[player])
+      print('[DISCONNECT] Player has disconnected from the lobby!')
+
+  def _handleReady(self, data, address):
+    ip_addr, port = address
+    data = App._parse(self.packet.ReadyPacket, data)
+
+    lobby_id = self.players[SpaceTeam.getPlayerId(address)]
+    ready = self.games[lobby_id].toggleReady(address, data.toggle)
+
+    payload = self.packet.ReadyPacket()
+    payload.type = self.packet.READY
+    payload.toggle = data.toggle
+    payload.player_id = str(port)
+
+    self.connection.broadcast(self.games[lobby_id].players, payload)
+    
+    if data.toggle: print('[READY] Player {} is ready!'.format(port))
+    else: print('[READY] Player {} is not ready!'.format(port))
+
+    if ready and len(self.games[lobby_id].players) > 1:
+      payload = self.packet.GameStatePacket()
+      payload.type = self.packet.GAME_STATE
+      payload.sector = 1
+      payload.update = self.packet.GameStatePacket.SECTOR
+
+      self.connection.broadcast(self.games[lobby_id].players, payload)
+      Thread(
+        target=self._clockTick,
+        args=[
+          lobby_id,
+          self.games[lobby_id].players,
+          100,
+        ],
+        kwargs={'screen': self.packet.GameStatePacket.SECTOR}
+      ).start()
+
+  def _clockTick(self, lobby, address, time, **kw):
+    self.games[lobby].clock = time
+
+    for remaining in range(time, -1, -1):
+      self.games[lobby].clock = remaining
+
+      payload = self.packet.GameStatePacket()
+      payload.type = self.packet.GAME_STATE
+      payload.clock = remaining
+      payload.update = self.packet.GameStatePacket.CLOCK_TICK
+      if 'screen' in kw: payload.screen = kw['screen']
+
+      if type(address) is list:
+        self.connection.broadcast(address, payload)
+      else:
+        self.connection.send((address['ip_addr'], address['port']), payload)
+
+      sleep(0.1)
+
+    if 'callback' in kw:
+      kw['callback']()
+
+  def parsePacket(self, data, address):
+    self.packet.ParseFromString(data)
+
+    if self.packet.type == self.packet.CONNECT:
+      self._handleConnect(data, address)
+    elif self.packet.type == self.packet.DISCONNECT:
+      self._handleDisconnect(data, address)
+    elif self.packet.type == self.packet.READY:
+      self._handleReady(data, address)
+
+  def start(self):
+    self.connection.listen(self.parsePacket)
+
+if __name__ == '__main__':
+  app = App()
+  app.start()

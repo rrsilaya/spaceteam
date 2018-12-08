@@ -49,10 +49,14 @@ if __name__ == '__main__':
     if packet.type == packet.GAME_STATE:
       data = _parse(packet.GameStatePacket, data)
 
-      if data.update == 0:
+      if data.update == packet.GameStatePacket.CONNECT:
         print('New player has connected. PLAYERS: %i' % data.player_count)
-      elif data.update == 1:
+      elif data.update == packet.GameStatePacket.DISCONNECT:
         print('A player has  disconnected. PLAYERS: %i' % data.player_count)
+      elif data.update == packet.GameStatePacket.SECTOR:
+        print('Starting sector %i' % data.sector)
+      elif data.update == packet.GameStatePacket.CLOCK_TICK:
+        print('Clock: %i' % data.clock)
     elif packet.type == packet.READY:
       data = _parse(packet.ReadyPacket, data)
       
