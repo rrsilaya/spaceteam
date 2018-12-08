@@ -1,6 +1,7 @@
 TOGGLE = 0
 NUMERIC = 1
 CHOICE = 2
+SINGLE = 3
 
 class types:
   CALCIUM_RAZOR = 0
@@ -44,9 +45,8 @@ class Command:
     elif type == types.IODINE_SHOWER:
       self._setInit(
         'Iodine Shower',
-        [False, True],
-        TOGGLE,
-        choices=['Infuse', 'Diffuse']
+        ['Infuse', 'Diffuse'],
+        CHOICE
       )
     elif type == types.CONTRACTING_PROPELLER:
       self._setInit(
@@ -59,6 +59,63 @@ class Command:
         'Quasipaddle',
         [ i + 1 for i in range(5) ],
         NUMERIC
+      )
+    elif type == types.HOLOSPINDLE:
+      self._setInit(
+        'Holospindle',
+        [ i + 1 for i in range(2) ],
+        CHOICE
+      )
+    elif type == types.ARCBALL_PENDULUM:
+      self._setInit(
+        'Arcball Pendulum',
+        [False, True],
+        TOGGLE,
+        choices=['Turn On', 'Turn Off']
+      )
+    elif type == types.PRESSURIZED_VARNISH:
+      self._setInit(
+        'Pressurized Varnish',
+        [ i + 1 for i in range(3) ],
+        NUMERIC
+      )
+    elif type == types.ORBRING:
+      self._setInit(
+        'Orbring',
+        ['Power Up', 'Power Down'],
+        CHOICE
+      )
+    elif type == types.FLUXLOOSENER_INDUCER:
+      self._setInit(
+        'Fluxloosener Inducer',
+        ['Flush'],
+        CHOICE
+      )
+    elif type == types.PROTOLUBE_OPTIMIZER:
+      self._setInit(
+        'Protolube Optimizer',
+        [False, True],
+        TOGGLE,
+        choices=['Fragment', 'Defragment']
+      )
+    elif type == types.PSILOCYBIN_CAPACITOR:
+      self._setInit(
+        'Psilocybin Capacitor',
+        [ (i * 10) + 50 for i in range(5) ],
+        NUMERIC
+      )
+    elif type == types.SALTY_CANISTER:
+      self._setInit(
+        'Salty Canister',
+        [False, True],
+        TOGGLE,
+        choices=['Open', 'Close']
+      )
+    elif type == types.ALTITUDE_OPERATOR:
+      self._setInit(
+        'Altitude Operator',
+        ['Approach', 'Kick'],
+        CHOICE
       )
 
     self.state = states[0]
