@@ -15,7 +15,7 @@ class MainApplication(tk.Tk):
     self.gameRoom = None
 
     self._screen = None
-    self.changeScreen(menu.Main)
+    self.changeScreen(menu.Username)
 
   def handleWindowClose(self):
     self.closeGameConnection()
