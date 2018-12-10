@@ -2,7 +2,7 @@ import tkinter as tk
 import menu
 import chat
 
-from game import Ship
+from game import WaitingRoom
 
 class Lobby(tk.Frame):
   def __init__(self, root):
@@ -10,12 +10,12 @@ class Lobby(tk.Frame):
     self.root = root
 
     self.enableChat = self.root.enableChat
-    # self.udpPacket = self.root.udpPacket
-    # self.gameConnection = self.root.gameConnection
+    self.udpPacket = self.root.udpPacket
+    self.gameConnection = self.root.gameConnection
 
-    # self.gameData = { 'screen': 'LOBBY', 'room': self.root.gameRoom }
+    self.gameData = { 'screen': 'LOBBY', 'room': self.root.gameRoom }
     self._loadView()
-    # self.gameConnection.listen(self.streamParser)
+    self.gameConnection.listen(self.streamParser)
 
   def parsePacket(type, packet):
     data = type()
@@ -57,7 +57,7 @@ class Lobby(tk.Frame):
 
   def _loadView(self):
     self.chatbox = chat.Screen(self.root)
-    self.game = Ship(self)
+    self.game = WaitingRoom(self)
 
     self.chatbox.pack(side=tk.RIGHT)
     self.game.pack(side=tk.LEFT)
