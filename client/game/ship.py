@@ -223,20 +223,35 @@ class Ship(tk.Canvas):
     self.box_off = box_off
     self.box_on = box_on
 
-    self.create_image(70, Y_OFFSET + 63, image=self.hswitch_off, tags='HSWITCH1')
-    self.create_image(565, Y_OFFSET + 105, image=self.btn_off, tags='BTN1')
-    self.create_image(565, Y_OFFSET + 180, image=self.btn_off, tags='BTN2')
+    self.create_text(70, Y_OFFSET + 45, text='Calcium Razor', fill='black', font=_getFont('body'))
+    self.create_image(70, Y_OFFSET + 80, image=self.hswitch_off, tags='HSWITCH1')
 
-    self.create_rectangle(200, Y_OFFSET + 322, 500, Y_OFFSET + 327, fill='black', outline='', tags='HSLIDER_GUIDE')
-    self.create_image(200, Y_OFFSET + 325, image=self.hslider, tags='HSLIDER')
-
+    self.create_text(205, Y_OFFSET + 60, text='Salty', fill='black', font=_getFont('body'))
+    self.create_text(205, Y_OFFSET + 75, text='Cannister', fill='black', font=_getFont('body'))
     self.create_image(295, Y_OFFSET + 64, image=self.box_off, tags='BOX1')
     self.create_image(370, Y_OFFSET + 64, image=self.box_off, tags='BOX2')
+    self.create_text(295, Y_OFFSET + 64, text='0', fill='white', font=_getFont('heading-2x'), tags='BOX1L')
+    self.create_text(370, Y_OFFSET + 64, text='1', fill='white', font=_getFont('heading-2x'), tags='BOX2L')
 
+    self.create_text(565, Y_OFFSET + 50, text='Protolube Optimizer', fill='black', font=_getFont('body'))
+    self.create_image(565, Y_OFFSET + 105, image=self.btn_off, tags='BTN1')
+    self.create_image(565, Y_OFFSET + 180, image=self.btn_off, tags='BTN2')
+    self.create_text(565, Y_OFFSET + 105, text='Fragment', fill='white', font=_getFont('heading-2s'), tags='BTN1L')
+    self.create_text(565, Y_OFFSET + 180, text='Defragment', fill='white', font=_getFont('heading-2s'), tags='BTN2L')
+
+    self.create_text(70, Y_OFFSET + 155, text='Quasipaddle', fill='black', font=_getFont('body'))
+    self.create_rectangle(200, Y_OFFSET + 317, 500, Y_OFFSET + 322, fill='black', outline='', tags='HSLIDER_GUIDE')
+    self.create_image(200, Y_OFFSET + 320, image=self.hslider, tags='HSLIDER')
+    for i in range(5): self.create_text(200 + (i * 75), Y_OFFSET + 355, text=str(i), fill='black', font=_getFont('body3'))
+
+    self.create_text(350, Y_OFFSET + 165, text='Arcball Pendulum', fill='black', font=_getFont('body'))
+    self.create_image(350, Y_OFFSET + 195, image=self.vswitch_off, tags='VSWITCH1')
+
+    self.create_text(350, Y_OFFSET + 290, text='Psylocibin Capacitor', fill='black', font=_getFont('body'))
     self.create_rectangle(68, Y_OFFSET + 225, 73, 555, fill='black', outline='', tags='VSLIDER_GUIDE')
     self.create_image(70, Y_OFFSET + 215, image=self.vslider, tags='VSLIDER')
+    for i in range(3): self.create_text(35, Y_OFFSET + 215 + (i * 60), text=str(i), fill='black', font=_getFont('body3'))
 
-    self.create_image(350, Y_OFFSET + 190, image=self.vswitch_off, tags='VSWITCH1')
 
     self.tag_bind('HSWITCH1', '<Button-1>', lambda _: self.toggleHSwitch('HSWITCH1'))
     self.tag_bind('VSWITCH1', '<Button-1>', lambda _: self.toggleVSwitch('VSWITCH1'))
@@ -245,11 +260,19 @@ class Ship(tk.Canvas):
     self.tag_bind('BOX1', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX1', False))
     self.tag_bind('BOX2', '<Button-1>', lambda _: self.toggleBoxButton('BOX2', True))
     self.tag_bind('BOX2', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX2', False))
+    self.tag_bind('BOX1L', '<Button-1>', lambda _: self.toggleBoxButton('BOX1', True))
+    self.tag_bind('BOX1L', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX1', False))
+    self.tag_bind('BOX2L', '<Button-1>', lambda _: self.toggleBoxButton('BOX2', True))
+    self.tag_bind('BOX2L', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX2', False))
 
     self.tag_bind('BTN1', '<Button-1>', lambda _: self.toggleButton('BTN1', True))
     self.tag_bind('BTN1', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN1', False))
     self.tag_bind('BTN2', '<Button-1>', lambda _: self.toggleButton('BTN2', True))
     self.tag_bind('BTN2', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN2', False))
+    self.tag_bind('BTN1L', '<Button-1>', lambda _: self.toggleButton('BTN1', True))
+    self.tag_bind('BTN1L', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN1', False))
+    self.tag_bind('BTN2L', '<Button-1>', lambda _: self.toggleButton('BTN2', True))
+    self.tag_bind('BTN2L', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN2', False))
 
     self.tag_bind('HSLIDER', '<B1-Motion>', lambda e: self.handleHSlider('HSLIDER', 'HSLIDER_GUIDE', e))
     self.tag_bind('HSLIDER', '<ButtonRelease-1>', lambda e: self.handleHSliderDrop('HSLIDER', 'HSLIDER_GUIDE', 4, e))
