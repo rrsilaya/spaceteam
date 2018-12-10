@@ -4,6 +4,7 @@ from utils.fonts import _getFont
 from game.sector import Sector
 from threading import Thread
 from time import sleep
+from uuid import uuid4
 
 class WaitingRoom(tk.Canvas):
   def __init__(self, root):
@@ -18,34 +19,31 @@ class WaitingRoom(tk.Canvas):
   def exitLobby(self, event=None):
     self.root.exitLobby()
 
-  def incrementHold(self):
-    self.create_rectangle(0, 335, 0, 339, fill='green', tags='LOADER')
+  def _sendReadySignal(self, player):
+    uuid = uuid4().hex
 
-    while self.isHold and self.hold < 40:
-      sleep(0.05)
+    self.create_image(260 + (player * 80), 270, image=self.ring, tags=uuid)
+    while self.coords(uuid)[1] > -5:
+      self.move(uuid, 0, -10)
+      sleep(0.06)
+    self.delete(uuid)
+
+  def playerReady(self, player=0):
+    while self.isHold:
       self.hold += 1
-
-      self.delete('LOADER')
-      self.create_rectangle(0, 335, (self.hold / 40.0) * 700, 339, fill='green', tags='LOADER')
-
-    if self.hold != 40:
-      while self.hold > 0:
-        sleep(0.01)
-        self.hold -= 1
-        self.delete('LOADER')
-        self.create_rectangle(0, 335, (self.hold / 40.0) * 700, 339, fill='green', tags='LOADER')
-    else:
-      self.root.changeGameScreen(Sector)
+      Thread(target=self._sendReadySignal, args=[player]).start()
+      sleep(0.06)
 
   def toggleBeam_on(self, event=None):
     self.itemconfig('BEAM', image=self.beam_toggled)
     
     self.isHold = True
-    hold = Thread(target=self.incrementHold)
+    hold = Thread(target=self.playerReady)#self.incrementHold)
     hold.start()
 
   def toggleBeam_off(self, event=None):
     self.itemconfig('BEAM', image=self.beam)
+    self.hold = 0
     self.isHold = False
 
   def _loadView(self):
@@ -54,6 +52,7 @@ class WaitingRoom(tk.Canvas):
     beam_toggled_img = tk.PhotoImage(file='assets/elements/beam-toggled.png')
     floor_img = tk.PhotoImage(file='assets/elements/lobby-floor.png')
     wallpaper_img = tk.PhotoImage(file='assets/elements/lobby-wallpaper.png')
+    beam_ring = tk.PhotoImage(file='assets/elements/beam-ring.png')
 
     player1_img = tk.PhotoImage(file='assets/elements/player.png')
 
@@ -63,6 +62,7 @@ class WaitingRoom(tk.Canvas):
     self.floor = floor_img.zoom(3).subsample(2)
     self.wallpaper = wallpaper_img
 
+    self.ring = beam_ring.subsample(2)
     self.avatars = [player1_img]
     self.avatars = [a.zoom(3).subsample(2) for a in self.avatars]
 
@@ -78,10 +78,9 @@ class WaitingRoom(tk.Canvas):
     # Players
     for player in range(5):
       self.create_image(230 + (player * 80), 285, image=self.avatars[player % len(self.avatars)])
-      
+
     self.create_image(80, 280, image=self.door, tags='DOOR')
     self.create_image(350, 450, image=self.beam, tags='BEAM')
-    self.create_rectangle(50, 195, 110, 223, fill='green', outline='white')
     self.create_text(83, 210, font=_getFont('body3'), text='EXIT', fill='white')
 
     self.tag_bind('BEAM', '<ButtonPress-1>', self.toggleBeam_on)

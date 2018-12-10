@@ -38,7 +38,7 @@ class Ship(tk.Canvas):
   def _loadView(self):
     ship = tk.PhotoImage(file='assets/elements/ship-small.png')
     instruction = tk.PhotoImage(file='assets/elements/instruction.png')
-    timer_empty = tk.PhotoImage(file='assets/elements/timer-empty.png')
+    timer_empty = tk.PhotoImage(file='assets/elements/timer-empty-transparent.png')
     space = tk.PhotoImage(file='assets/elements/space-top.png')
 
     panel1x1 = tk.PhotoImage(file='assets/panels/1x1.png')
@@ -68,6 +68,8 @@ class Ship(tk.Canvas):
     for distance in range(8):
       self.create_image(distance * 95, 100, image=self.instruction, anchor=tk.NW)
 
+    self.create_rectangle(0, 195, 700, 220, fill='green', outline='')
     self.create_image(0, 195, image=self.timer_empty, anchor=tk.NW)
     self.create_image(480, 195, image=self.timer_empty, anchor=tk.NW)
+
     self.create_text(30, 150, text='▶  Engage Elgenthrottle', fill='white', font=_getFont('heading'), anchor=tk.W)
