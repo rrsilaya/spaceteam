@@ -3,6 +3,8 @@ import menu
 
 from re import match
 from utils.fonts import _getFont
+from connection import UdpConnection
+from proto.spaceteam_pb2 import SpaceteamPacket
 
 class GetIp(tk.Frame):
   def __init__(self, root):
@@ -15,7 +17,9 @@ class GetIp(tk.Frame):
     self._loadView()
 
   def connectToServer(self, event=None):
-    print('Connecting to {}'.format(self.ipaddr.get()))
+    # print('Connecting to {}'.format(self.ipaddr.get()))
+    self.root.gameConnection = UdpConnection(self.ipaddr.get())
+    self.root.udpPacket = SpaceteamPacket()
     self.root.changeScreen(menu.Main)
 
   def _restrictIpAddress(self, *args):

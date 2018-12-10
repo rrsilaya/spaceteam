@@ -11,13 +11,25 @@ class MainApplication(tk.Tk):
 
     self.chat = None
     self.enableChat = True
+    self.gameConnection = None
+    self.gameRoom = None
 
     self._screen = None
     self.changeScreen(menu.Username)
 
   def handleWindowClose(self):
+    self.closeGameConnection()
+
     self.destroy()
     _exit(0)
+
+  def closeGameConnection(self):
+    if self.gameConnection is not None:
+      packet = self.udpPacket
+      payload = packet.DisconnectPacket()
+      payload.type = packet.DISCONNECT
+
+      self.gameConnection.send(payload)
 
   def changeScreen(self, screen):
     next = screen(self)

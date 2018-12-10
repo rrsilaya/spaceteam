@@ -44,20 +44,22 @@ class App:
     data = App._parse(self.packet.ConnectPacket, data)
 
     player = SpaceTeam.getPlayerId(address)
-    lobby_id = self.players[player]
-
-    self.games[lobby_id].removePlayer(address)
 
     if player in self.players:
-      payload = self.packet.GameStatePacket()
-      payload.type = self.packet.GAME_STATE
-      payload.player_count = len(self.games[lobby_id].players)
-      payload.update = self.packet.GameStatePacket.DISCONNECT
+      lobby_id = self.players[player]
 
-      self.connection.broadcast(self.games[lobby_id].players, payload)
+      self.games[lobby_id].removePlayer(address)
 
-      del(self.players[player])
-      print('[DISCONNECT] Player has disconnected from the lobby!')
+      if player in self.players:
+        payload = self.packet.GameStatePacket()
+        payload.type = self.packet.GAME_STATE
+        payload.player_count = len(self.games[lobby_id].players)
+        payload.update = self.packet.GameStatePacket.DISCONNECT
+
+        self.connection.broadcast(self.games[lobby_id].players, payload)
+
+        del(self.players[player])
+        print('[DISCONNECT] Player has disconnected from the lobby!')
 
   def _handleReady(self, data, address):
     ip_addr, port = address
@@ -76,7 +78,7 @@ class App:
     if data.toggle: print('[READY] Player {} is ready!'.format(port))
     else: print('[READY] Player {} is not ready!'.format(port))
 
-    if ready:# and len(self.games[lobby_id].players) > 1:
+    if ready and len(self.games[lobby_id].players) > 1:
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.sector = 1

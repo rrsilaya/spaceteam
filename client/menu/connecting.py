@@ -4,6 +4,7 @@ import menu
 from chat import Chat
 from threading import Thread
 from utils import _getFont
+from uuid import uuid4
 
 class Connecting(tk.Canvas):
   def __init__(self, root):
@@ -23,12 +24,27 @@ class Connecting(tk.Canvas):
     Thread(target=self._hostConnect).start()
 
   def _hostConnect(self):
-    if not self.chatroom:
-      self.chatroom = self.root.chat.createLobby(6)
+    if not self.chatroom and self.root.chat:
+      self.chatroom = self.root.chat.createLobby(4)
       self.root.chat.connect(self.chatroom, self.root.username)
-    
-    self.root.changeScreen(menu.Lobby)
 
+    Thread(target=self._connectGame).start()
+
+  def _connectGame(self):
+    packet = self.root.udpPacket
+
+    payload = packet.ConnectPacket()
+    payload.type = packet.CONNECT
+    
+    if not self.chatroom:
+      self.root.gameRoom = uuid4().hex[:5].upper()
+    else:
+      self.root.gameRoom = self.chatroom
+
+    payload.lobby_id = self.root.gameRoom
+
+    self.root.gameConnection.send(payload)
+    self.root.changeScreen(menu.Lobby)
 
   def toggleButton_on(self, event=None):
     self.itemconfig('CANCEL', image=self.button_toggle)

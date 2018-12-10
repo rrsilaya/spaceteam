@@ -1,8 +1,10 @@
 import tkinter as tk
 import menu
 
+from proto.spaceteam_pb2 import SpaceteamPacket
 from utils.fonts import _getFont
 from chat import Chat
+from threading import Thread
 
 class Connect(tk.Frame):
   def __init__(self, root):
@@ -19,6 +21,7 @@ class Connect(tk.Frame):
     chatroom = self.chatroom.get()
     username = self.root.username
 
+    self.root.gameRoom = chatroom
     self._isConnecting = True
 
     if self.root.enableChat:
@@ -27,6 +30,16 @@ class Connect(tk.Frame):
       lobby = self.root.chat.connect(chatroom, username)
 
     self._isConnecting = False
+    Thread(target=self._connectGame).start()
+
+  def _connectGame(self):
+    packet = self.root.udpPacket
+
+    payload = packet.ConnectPacket()
+    payload.type = packet.CONNECT
+    payload.lobby_id = self.chatroom.get()
+
+    self.root.gameConnection.send(payload)
     self.root.changeScreen(menu.Lobby)
 
   def _handleInputField(self, *args):
