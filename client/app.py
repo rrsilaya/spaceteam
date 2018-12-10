@@ -10,12 +10,12 @@ class MainApplication(tk.Tk):
     self.protocol('WM_DELETE_WINDOW', self.handleWindowClose)
 
     self.chat = None
-    self.enableChat = True
+    self.enableChat = False
     self.gameConnection = None
     self.gameRoom = None
 
     self._screen = None
-    self.changeScreen(menu.Username)
+    self.changeScreen(menu.Lobby)
 
   def handleWindowClose(self):
     self.closeGameConnection()
