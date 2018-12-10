@@ -51,6 +51,12 @@ class Main(tk.Canvas):
       else:
         self.root.changeScreen(menu.Connect)
 
+  def handleBtn_off(self, event=None):
+    self.itemconfig('HELP', image=self.btn_on)
+
+  def handleBtn_on(self, event=None):
+    self.root.changeScreen(menu.HowToPlay)
+
   def _loadView(self):
     logo = tk.PhotoImage(file='assets/ui/logo.png')
     space = tk.PhotoImage(file='assets/elements/space-full.png')
@@ -58,6 +64,8 @@ class Main(tk.Canvas):
     switch_on = tk.PhotoImage(file='assets/ui/horizontalswitch-on.png')
     vswitch_off = tk.PhotoImage(file='assets/ui/verticalswitch-off.png')
     vswitch_on = tk.PhotoImage(file='assets/ui/verticalswitch-on.png')
+    btn_off = tk.PhotoImage(file='assets/controls/green-off.png')
+    btn_on = tk.PhotoImage(file='assets/controls/green-on.png')
     dial = Image.open('assets/ui/dial.png')
 
     self.logo = logo
@@ -66,6 +74,8 @@ class Main(tk.Canvas):
     self.switch_on = switch_on.subsample(2)
     self.vswitch_off = vswitch_off.subsample(2)
     self.vswitch_on = vswitch_on.subsample(2)
+    self.btn_off = btn_off.zoom(2).subsample(3)
+    self.btn_on = btn_on.zoom(2).subsample(3)
 
     self.dial_image = dial.resize((int(dial.size[0] * 1.15), int(dial.size[1] * 1.15)))
     self.dial = ImageTk.PhotoImage(self.dial_image.rotate(110, expand=True))
@@ -85,7 +95,14 @@ class Main(tk.Canvas):
     self.create_image(959, 35, image=self.vswitch_on, anchor=tk.N, tags='MODE_SWITCH')
     self.create_text(960, 155, text='JOIN', fill='white', font=_getFont('body2'))
 
+    self.create_image(985, 585, image=self.btn_off, anchor=tk.SE, tags='HELP')
+    self.create_text(955, 565, text='Help', fill='white', font=_getFont('title3'), anchor=tk.E, tags='HELP_TEXT')
+
     self.tag_bind('CHAT_SWITCH', '<ButtonPress-1>', self.toggleChat)
     self.tag_bind('MODE_SWITCH', '<ButtonPress-1>', self.toggleMode)
     self.tag_bind('DIAL', '<B1-Motion>', self.handleDial)
     self.tag_bind('DIAL', '<ButtonRelease-1>', self.handleDialRelease)
+    self.tag_bind('HELP', '<ButtonPress-1>', self.handleBtn_off)
+    self.tag_bind('HELP_TEXT', '<ButtonPress-1>', self.handleBtn_off)
+    self.tag_bind('HELP', '<ButtonRelease-1>', self.handleBtn_on)
+    self.tag_bind('HELP_TEXT', '<ButtonRelease-1>', self.handleBtn_on)
