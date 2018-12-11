@@ -66,7 +66,7 @@ if __name__ == '__main__':
     elif packet.type == packet.COMMAND: 
       data = _parse(packet.CommandPacket, data)
       print("received command packet", data.command)
-      if data.command == "No Command":
+      if data.command == -1:
         print(data)
 
 

@@ -9,7 +9,7 @@ CHOICE = 2
 SINGLE = 3
 
 class types:
-  NO_COMMAND = "No Command"
+  NO_COMMAND = -1
   CALCIUM_RAZOR = 0
   LORENTZ_WHITTLER = 1
   KILOBYPASS_TRANSFORMER = 2
@@ -123,6 +123,13 @@ class Command:
         ['Approach', 'Kick'],
         CHOICE
       )
+    elif type == types.NO_COMMAND:
+      self._setInit(
+        'No Command',
+        [types.NO_COMMAND],
+        types.NO_COMMAND
+      )
+
 
     self.server = server
     self.packet = SpaceteamPacket()
@@ -165,7 +172,7 @@ class Command:
       self.server.connection.send(address, payload)
       sleep(0.1)
 
-    if not self.isResolved:
+    if not self.isResolved and self.command != str(types.NO_COMMAND):
       print('Failed to execute command <{}: {}>'.format(self.name, self.command))
       self.callbacks['updateLife'](-25)
       self.isResolved = True
@@ -173,7 +180,11 @@ class Command:
   def spawn(self, address):
     self.isResolved = False
     self.time = 120
-    self.command = self.getRandomCommand()
+
+    if (self.type != types.NO_COMMAND):
+      self.command = self.getRandomCommand()
+    else:
+      self.command = str(types.NO_COMMAND)
 
     payload = self.packet.CommandPacket()
     payload.type = self.packet.COMMAND
@@ -183,5 +194,7 @@ class Command:
     print('> {}: {}'.format(self.name, payload.command))
 
     self.server.connection.send(address, payload)
-    Thread(target=self.tick, args=[address]).start()
-
+    if (self.type != types.NO_COMMAND):
+      Thread(target=self.tick, args=[address]).start()
+    else:
+      self.tick(address)
