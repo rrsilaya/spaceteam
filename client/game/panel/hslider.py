@@ -59,6 +59,7 @@ class HorizontalSlider:
     if not hasattr(self.root, 'hslider'):
       self.root.hslider = hslider
 
+    self.root.addPanel(width=3, height=1, gridPos=(self.x, self.y))
     self.root.create_text(210 + PANEL_WIDTH * self.x, Y_OFFSET + 36 + PANEL_HEIGHT * self.y, text=self.label, fill='black', font=_getFont('body'))
     self.root.create_rectangle(60 + PANEL_WIDTH * self.x, Y_OFFSET + 63 + PANEL_HEIGHT * self.y, 360 + PANEL_WIDTH * self.x, Y_OFFSET + 68 + PANEL_HEIGHT * self.y, fill='black', outline='', tags='{}_GUIDE'.format(self.id))
     self.root.create_image(60 + PANEL_WIDTH * self.x, Y_OFFSET + 66 + PANEL_HEIGHT * self.y, image=self.root.hslider, tags=self.id)
