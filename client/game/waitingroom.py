@@ -1,7 +1,6 @@
 import tkinter as tk
 
 from utils.fonts import _getFont
-from game.sector import Sector
 from threading import Thread
 from time import sleep
 from uuid import uuid4
@@ -20,7 +19,7 @@ class WaitingRoom(tk.Canvas):
     self.readyPayload.type = packet.READY
     self.readyPayload.toggle = True
 
-    self._loadView()
+    self._loadView()  
 
   def exitLobby(self, event=None):
     self.root.exitLobby()
@@ -43,13 +42,15 @@ class WaitingRoom(tk.Canvas):
     uuid = uuid4().hex
 
     self.create_image(260 + (player * 80), 270, image=self.ring, tags=uuid)
-    while self.coords(uuid)[1] > -5:
+    while self.root.gameData['screen'] == 'LOBBY' and self.coords(uuid)[1] > -5:
       self.move(uuid, 0, -10)
       sleep(0.06)
-    self.delete(uuid)
+    
+    if self.root.gameData['screen'] == 'LOBBY':
+      self.delete(uuid)
 
   def playerReady(self):
-    while self.isHold:
+    while self.root.gameData['screen'] == 'LOBBY' and self.isHold:
       self.hold += 1
 
       if self.hold % 10 == 0: # debounce

@@ -16,11 +16,23 @@ class BinaryButton:
 
     self._loadPanel()
 
+  def _sendPacket(self, tag):
+    packet = self.root.udpPacket
+    panel = int(search(r'([12])L?$', tag)[1])
+
+    payload = packet.CommandPacket()
+    payload.type = packet.COMMAND
+    payload.command = self.id
+    payload.panel = str(panel - 1)
+
+    self.root.gameConnection.send(payload)
+
   def toggleButton(self, tag, flag):
     if flag:
       self.root.itemconfig(tag, image=self.root.box_on)
     else:
       self.root.itemconfig(tag, image=self.root.box_off)
+      self._sendPacket(tag)
 
   def _loadPanel(self):
     box_off = tk.PhotoImage(file='assets/controls/red-off.png')

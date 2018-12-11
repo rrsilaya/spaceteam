@@ -2,7 +2,6 @@ from socket import AF_INET, socket, SOCK_DGRAM
 from proto.spaceteam_pb2 import SpaceteamPacket
 from re import match
 from threading import Thread
-from server import Command
 
 HOST = 'localhost'
 TCP_PORT = 80
@@ -58,18 +57,11 @@ if __name__ == '__main__':
         print('Starting sector %i' % data.sector)
       elif data.update == packet.GameStatePacket.CLOCK_TICK:
         print('Clock: %i' % data.clock)
-        print('total time' + str(data.total_time))
     elif packet.type == packet.READY:
       data = _parse(packet.ReadyPacket, data)
       
       if data.toggle: print('Player {} is ready!'.format(data.player_id))
       else: print('Player {} is not ready!'.format(data.player_id))
-    elif packet.type == packet.COMMAND: 
-      data = _parse(packet.CommandPacket, data)
-      print("received command packet", data.command)
-      if data.command == -1:
-        print(data)
-
 
   app.listen(parser)
 
@@ -101,44 +93,5 @@ if __name__ == '__main__':
         payload.toggle = False
       else:
         payload.toggle = True
-      app.send(payload)
 
-    else:
-      payload = packet.CommandPacket()
-      payload.type = packet.COMMAND
-      if cmd == '1':
-        payload.panel ='Calcium Razor'
-      elif cmd == '2':
-        payload.panel ='Lorenz Whittler'
-      elif cmd == '3':
-        payload.panel ='Kilobypass Transformer'
-      elif cmd == '4':
-        payload.panel ='Iodine Shower'
-      elif cmd == '5':
-        payload.panel ='Contracting Propeller'
-      elif cmd == '6':
-        payload.panel ='Quasipaddle'
-      elif cmd == '7':
-        payload.panel ='Holospindle'
-      elif cmd == '8':
-        payload.panel ='Arcball Pendulum'
-      elif cmd == '9':
-        payload.panel ='Pressurized Varnish'
-      elif cmd == '10':
-        payload.panel ='Orbring'
-      elif cmd == '11':
-        payload.panel ='Fluxloosener Inducer'
-      elif cmd == '12':
-        payload.panel ='Protolube Optimizer'
-      elif cmd == '13':
-        payload.panel ='Psilocybin Capacitor'
-      elif cmd == '14':
-        payload.panel ='Salty Canister'
-      elif cmd == '15':
-        payload.panel ='Altitude Operator'
-      
-      else:
-        payload.panel = ' '
-
-      payload.command = args
       app.send(payload)
