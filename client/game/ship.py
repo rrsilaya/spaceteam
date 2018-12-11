@@ -17,12 +17,12 @@ class Ship(tk.Canvas):
 
     self.gameConnection = self.root.gameConnection
     self.udpPacket = self.root.udpPacket
-    self.gameData = self.root.gameData
 
     self._loadView()
     self._preparePanels()
     self._prepareControls(0)
     Thread(target=self.clockTick).start()
+    Thread(target=self.commandListener).start()
 
   def addPanel(self, **kw):
     # x: (0:4)
@@ -83,15 +83,15 @@ class Ship(tk.Canvas):
     self.create_image(0, 195, image=self.timer_empty, anchor=tk.NW)
     self.create_image(480, 195, image=self.timer_empty, anchor=tk.NW)
 
-    self.create_text(30, 150, text='▶  ' + self.gameData['command'], fill='white', font=_getFont('heading'), anchor=tk.W)
+    self.create_text(30, 150, text='▶  ' + self.root.gameData['command'], fill='white', font=_getFont('heading'), anchor=tk.W, tags='COMMAND_VIEW')
 
   def clockTick(self):
     while True:
-      tick = self.gameData['currentTime']
-      total = self.gameData['totalTime']
+      tick = self.root.gameData['currentTime']
+      total = self.root.gameData['totalTime']
 
       c = self.coords('TIMER')
-      self.coords('TIMER', c[0], c[1], (tick // total) * 700, c[3])
+      self.coords('TIMER', c[0], c[1], round((tick / total) * 700), c[3])
 
       if c[2] < 420 and c[2] > 210:
         self.itemconfig('TIMER', fill='yellow')
@@ -99,6 +99,14 @@ class Ship(tk.Canvas):
         self.itemconfig('TIMER', fill='red')
 
       sleep(0.1)
+
+  def commandListener(self):
+    prevCommand = self.root.gameData['command']
+
+    while True:
+      if prevCommand != self.root.gameData['command']:
+        prevCommand = self.root.gameData['command']
+        self.itemconfig('COMMAND_VIEW', text='▶  ' + prevCommand)
 
   def _prepareControls(self, player):
     if player == 0:

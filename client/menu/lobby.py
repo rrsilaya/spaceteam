@@ -47,13 +47,16 @@ class Lobby(tk.Frame):
       elif data.update == p.GameStatePacket.CLOCK_TICK:
         # Update clock
         self.gameData['currentTime'] = data.clock
+        self.gameData['totalTime'] = data.total_time
     elif p.type == p.COMMAND:
       data = Lobby.parsePacket(p.CommandPacket, data)
 
       if data.command == 'NO_COMMAND':
         # Start Game
-        self.gameData['room'] = 'SHIP'
+        self.gameData['screen'] = 'SHIP'
         self.changeGameScreen(Ship)
+      else:
+        self.gameData['command'] = 'Set {} to {}'.format(data.command, data.panel)
 
   def changeGameScreen(self, screen):
     before = self.game
