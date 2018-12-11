@@ -1,12 +1,11 @@
 # spaceteam
 
 ### Installation
-#### Client
-1. Inside the client directory, reate a virtual environment named `env` with `virtualenv env`. This will allow you to install dependencies on this local project.
-2. Activate the created virtual environment with `source env/bin/activate`.
-3. Install all dependencies with `pip install -r requirements.txt`.
-4. Deactivate the virtual environment with `deactivate`.
+1. Install the assets using the installation script `install.sh`.
+2. Start the server, `cd server && python3 server.py`.
+3. Start the client, `cd client && python3 app.py`.
 
-#### Server
-1. Make sure `tkinter` is properly configured in your machine.
-2. Start the application with `python3 main.py`.
+### Developers
+- Leal, Merry Trizia
+- Marabe, Ross Fiel
+- Silaya, Ralph Lawrence
