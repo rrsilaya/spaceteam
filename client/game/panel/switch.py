@@ -19,6 +19,16 @@ class Switch:
 
     self._loadPanel()
 
+  def _sendPacket(self):
+    packet = self.root.udpPacket
+
+    payload = packet.CommandPacket()
+    payload.type = packet.COMMAND
+    payload.command = self.id
+    payload.panel = str(self.isToggled)
+
+    self.root.gameConnection.send(payload)
+
   def toggleHSwitch(self, event=None):
     if self.isToggled:
       self.root.itemconfig(self.id, image=self.root.hswitch_off)
@@ -30,6 +40,8 @@ class Switch:
     if self.callback:
       self.callback(self.isToggled)
 
+    self._sendPacket()
+
   def toggleVSwitch(self, event=None):
     if self.isToggled:
       self.root.itemconfig(self.id, image=self.root.vswitch_off)
@@ -40,6 +52,8 @@ class Switch:
 
     if self.callback:
       self.callback(self.isToggled)
+
+    self._sendPacket()
 
   def _loadPanel(self):
     hswitch_off = tk.PhotoImage(file='assets/ui/horizontalswitch-off.png')
