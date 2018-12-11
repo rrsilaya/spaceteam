@@ -9,6 +9,7 @@ CHOICE = 2
 SINGLE = 3
 
 class types:
+  NO_COMMAND = "NO_COMMAND"
   CALCIUM_RAZOR = 0
   LORENTZ_WHITTLER = 1
   KILOBYPASS_TRANSFORMER = 2
@@ -122,6 +123,13 @@ class Command:
         ['Approach', 'Kick'],
         CHOICE
       )
+    elif type == types.NO_COMMAND:
+      self._setInit(
+        types.NO_COMMAND,
+        [types.NO_COMMAND],
+        types.NO_COMMAND
+      )
+
 
     self.server = server
     self.packet = SpaceteamPacket()
@@ -153,26 +161,39 @@ class Command:
     payload = self.packet.GameStatePacket()
     payload.type = self.packet.GAME_STATE
     payload.clock = self.time
+    payload.total_time = self.time
     payload.update = self.packet.GameStatePacket.CLOCK_TICK
     payload.screen = self.packet.GameStatePacket.SHIP
 
-    self.server.connection.send(address, payload)
+    if self.command != types.NO_COMMAND:
+      self.server.connection.send(address, payload)
+    else:
+      self.server.connection.broadcast(address, payload)
     while self.time > 0 and not self.isResolved:
       self.time -= 1
       payload.clock = self.time
 
-      self.server.connection.send(address, payload)
+      if self.command != types.NO_COMMAND:
+        self.server.connection.send(address, payload)
+      else:
+        self.server.connection.broadcast(address, payload)
       sleep(0.1)
 
-    if not self.isResolved:
+    if not self.isResolved and self.command != types.NO_COMMAND:
       print('Failed to execute command <{}: {}>'.format(self.name, self.command))
       self.callbacks['updateLife'](-25)
       self.isResolved = True
 
   def spawn(self, address):
     self.isResolved = False
-    self.time = 30
-    self.command = self.getRandomCommand()
+
+    self.time = 40
+
+    if (self.type != types.NO_COMMAND):
+      self.command = self.getRandomCommand()
+    else:
+      self.command = types.NO_COMMAND
+
 
     payload = self.packet.CommandPacket()
     payload.type = self.packet.COMMAND
@@ -181,6 +202,9 @@ class Command:
 
     print('> {}: {}'.format(self.name, payload.command))
 
-    self.server.connection.send(address, payload)
-    Thread(target=self.tick, args=[address]).start()
-
+    if (self.type != types.NO_COMMAND):
+      self.server.connection.send(address, payload)
+      Thread(target=self.tick, args=[address]).start()
+    else:
+      self.server.connection.broadcast(address, payload)
+      self.tick(address)

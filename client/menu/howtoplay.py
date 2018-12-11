@@ -34,7 +34,7 @@ class HowToPlay(tk.Canvas):
     self.create_text(
       500,
       350,
-      text='Spaceteam is a cooperative game played with 2-8 people in the',
+      text='Spaceteam is a cooperative game played with 3-4 people in the',
       fill=colors.GREEN,
       font=_getFont('body2')
     )
@@ -56,14 +56,14 @@ class HowToPlay(tk.Canvas):
     self.create_text(
       500,
       460,
-      text='hold the green button to transmit signals. Good luck, and remember',
+      text='hold the green button to transmit signals. Execute the commands given on the',
       fill='white',
       font=_getFont('body2')
     )
     self.create_text(
       500,
       485,
-      text='to work together...as a spaceteam!',
+      text='screen. Good luck, and remember to work together...as a spaceteam!',
       fill='white',
       font=_getFont('body2')
     )

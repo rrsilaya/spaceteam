@@ -1,4 +1,4 @@
-from server import UdpServer, SpaceTeam
+from server import UdpServer, SpaceTeam, commands
 from proto.spaceteam_pb2 import SpaceteamPacket
 from time import sleep
 from threading import Thread
@@ -37,6 +37,7 @@ class App:
     self.connection.broadcast(self.games[data.lobby_id].players, payload)
 
     self.players[SpaceTeam.getPlayerId(address)] = data.lobby_id
+    print(self.games[data.lobby_id].players)
     print('[CONNECT] New player connected to lobby!')
 
   def _handleDisconnect(self, data, address):
@@ -81,25 +82,16 @@ class App:
     else: print('[READY] Player {} is not ready!'.format(port))
 
     if ready and len(self.games[lobby_id].players) > 1:
+      
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.sector = 1
       payload.update = self.packet.GameStatePacket.SECTOR
 
       self.connection.broadcast(self.games[lobby_id].players, payload)
-      Thread(
-        target=self._clockTick,
-        args=[
-          lobby_id,
-          self.games[lobby_id].players,
-          30
-        ],
-        kwargs={
-          'screen': self.packet.GameStatePacket.SECTOR,
-          'callback': self.games[lobby_id].start
-        }
-      ).start()
 
+      self.games[lobby_id].start()
+      
   def _clockTick(self, lobby, address, time, **kw):
     self.games[lobby].clock = time
 

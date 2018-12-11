@@ -1,5 +1,8 @@
 import random
-from server import Command
+from server import Command, commands
+
+from proto.spaceteam_pb2 import SpaceteamPacket
+
 
 BASE_COMMAND_COUNT = 10
 BASE_TIME = 50
@@ -17,6 +20,8 @@ class SpaceTeam:
     self.sector = 1
     self.givenCommands = BASE_COMMAND_COUNT
     self.life = 100
+
+    self.packet = SpaceteamPacket()
 
   def getPlayerId(address):
     ip_addr, port = address
@@ -76,6 +81,9 @@ class SpaceTeam:
 
 
   def start(self):
+    no_command = Command(commands.types.NO_COMMAND,self.server)
+    no_command.spawn(self.players)
+
     panels = random.sample([ i for i in range(15) ], self.givenCommands)
     panels = [ Command(panel, self.server, updateLife=self.updateLife) for panel in panels ]
 

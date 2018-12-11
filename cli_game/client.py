@@ -58,13 +58,20 @@ if __name__ == '__main__':
         print('Starting sector %i' % data.sector)
       elif data.update == packet.GameStatePacket.GAME_OVER:
         print('GAME OVER')
-      # elif data.update == packet.GameStatePacket.CLOCK_TICK:
-      #   print('Clock: %i' % data.clock)
+      elif data.update == packet.GameStatePacket.CLOCK_TICK:
+        print('Clock: %i' % data.clock)
+        print('total time' + str(data.total_time))
     elif packet.type == packet.READY:
       data = _parse(packet.ReadyPacket, data)
       
       if data.toggle: print('Player {} is ready!'.format(data.player_id))
       else: print('Player {} is not ready!'.format(data.player_id))
+    elif packet.type == packet.COMMAND: 
+      data = _parse(packet.CommandPacket, data)
+      print("received command packet", data.command)
+      if data.command == -1:
+        print(data)
+
 
   app.listen(parser)
 
