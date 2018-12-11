@@ -25,6 +25,19 @@ class types:
   PSILOCYBIN_CAPACITOR = 12
   SALTY_CANISTER = 13
   ALTITUDE_OPERATOR = 14
+  WAVEFORM_COLLIDER = 15
+  ALPHA_WAVE = 16
+  GLYCOL_PUMP = 17
+  CABIN_FAN = 18
+  GAMMA_RADIATOR = 19
+  THERMONUCLEAR_RESONATOR = 20
+  DOCKING_PROBE = 21
+  SCE_POWER = 22
+  SUIT_COMPOSITION = 23
+  H2O_FLOW = 24
+  WASTE_DUMP = 25
+  INT_LIGHTS = 26
+
 
 class Command:
   def __init__(self, type, server, **kw):
@@ -32,52 +45,49 @@ class Command:
       self._setInit(
         'Calcium Razor',
         [False, True],
-        TOGGLE,
-        choices=['Toggle On', 'Toggle Off']
+        TOGGLE
       )
     elif type == types.LORENTZ_WHITTLER:
       self._setInit(
         'Lorenz Whittler',
-        [ i + 1 for i in range(5) ],
+        [i for i in range(3)],
         NUMERIC
       )
     elif type == types.KILOBYPASS_TRANSFORMER:
       self._setInit(
         'Kilobypass Transformer',
-        [False, True],
-        TOGGLE,
-        choices=['Engage', 'Disengage']
+        ['Engage', 'Disengage']
+        CHOICE
       )
     elif type == types.IODINE_SHOWER:
       self._setInit(
         'Iodine Shower',
-        ['Infuse', 'Diffuse'],
-        CHOICE
+        [i + 1 for i in range(3)],
+        NUMBERICS
       )
     elif type == types.CONTRACTING_PROPELLER:
       self._setInit(
         'Contracting Propeller',
-        ['Release', 'Kick', 'Acquire'],
+        ['Acquire','Kick'],
         CHOICE
       )
     elif type == types.QUASIPADDLE:
       self._setInit(
         'Quasipaddle',
-        [ i + 1 for i in range(5) ],
+        [i + 1 for i in range(3)],
         NUMERIC
       )
     elif type == types.HOLOSPINDLE:
       self._setInit(
         'Holospindle',
-        [ i + 1 for i in range(2) ],
+        [0,1],
         CHOICE
       )
     elif type == types.ARCBALL_PENDULUM:
       self._setInit(
         'Arcball Pendulum',
-        [False, True],
-        TOGGLE,
-        choices=['Turn On', 'Turn Off']
+        [False,True],
+        TOGGLE
       )
     elif type == types.PRESSURIZED_VARNISH:
       self._setInit(
@@ -88,40 +98,110 @@ class Command:
     elif type == types.ORBRING:
       self._setInit(
         'Orbring',
-        ['Power Up', 'Power Down'],
-        CHOICE
+        [False,True],
+        TOGGLE
       )
     elif type == types.FLUXLOOSENER_INDUCER:
       self._setInit(
         'Fluxloosener Inducer',
-        ['Flush'],
+        [ i for i in range(3) ],
         CHOICE
       )
     elif type == types.PROTOLUBE_OPTIMIZER:
       self._setInit(
         'Protolube Optimizer',
-        [False, True],
-        TOGGLE,
-        choices=['Fragment', 'Defragment']
+        ['Defragment','Fragment'],
+        CHOICE
       )
     elif type == types.PSILOCYBIN_CAPACITOR:
       self._setInit(
         'Psilocybin Capacitor',
-        [ (i * 10) + 50 for i in range(5) ],
+        [ i for i in range(5) ],
         NUMERIC
       )
     elif type == types.SALTY_CANISTER:
       self._setInit(
         'Salty Canister',
-        [False, True],
-        TOGGLE,
-        choices=['Open', 'Close']
+        [0,1],
+        CHOICE
       )
     elif type == types.ALTITUDE_OPERATOR:
       self._setInit(
         'Altitude Operator',
-        ['Approach', 'Kick'],
+        [False, True],
+        TOGGLE
+      )
+    elif type == types.WAVEFORM_COLLIDER:
+      self._setInit(
+        'Waveform Collider',
+        [0,1],
         CHOICE
+      )   
+    elif type == types.ALPHA_WAVE:
+      self._setInit(
+        'Alpha Wave',
+        [i for i in range(3)],
+        NUMERIC
+      )     
+    elif type == types.GLYCOL_PUMP:
+       self._setInit(
+        'Glycol Pump',
+        [False,True],
+        TOGGLE
+      )       
+    elif type == types.CABIN_FAN:
+      self._setInit(
+        'Cabin Fan',
+        [0,1],
+        CHOICE
+      )
+    elif type == types.GAMMA_RADIATOR:
+      self._setInit(
+        'Gamma Radiator',
+        [False,True],
+        TOGGLE
+      )
+    elif type == types.THERMONUCLEAR_RESONATOR:
+      self._setInit(
+        'Thermonuclear Resonator',
+        [ i for i in range(5) ],
+        NUMERIC
+      )    
+    elif type == types.DOCKING_PROBE:
+      self._setInit(
+        'Docking Probe',
+        ['Extend', 'Retract'],
+        CHOICE
+      ) 
+    elif type == types.SCE_POWER:
+      self._setInit(
+        'SCE Power',
+        [ i for i in range(3) ],
+        NUMERIC
+      ) 
+    elif type == types.SUIT_COMPOSITION:
+      self._setInit(
+        'Suit Composition',
+        [ 0,1 ],
+        CHOICE
+      ) 
+    elif type == types.H2O_FLOW:
+      self._setInit(
+        'H2O Flow',
+        [ False,True ],
+        TOGGLE
+      ) 
+    elif type == types.WASTE_DUMP:
+      self._setInit(
+        'Waste Dump',
+        [ False,True ],
+        TOGGLE
+      )
+    elif type == types.INT_LIGHTS:
+      self._setInit(
+        'Int Lights',
+        [  i for i in range(3) ],
+        NUMERIC
       )
     elif type == types.NO_COMMAND:
       self._setInit(
@@ -129,6 +209,7 @@ class Command:
         [types.NO_COMMAND],
         types.NO_COMMAND
       )
+    
 
 
     self.server = server
