@@ -56,6 +56,8 @@ if __name__ == '__main__':
         print('A player has  disconnected. PLAYERS: %i' % data.player_count)
       elif data.update == packet.GameStatePacket.SECTOR:
         print('Starting sector %i' % data.sector)
+      elif data.update == packet.GameStatePacket.GAME_OVER:
+        print('GAME OVER')
       # elif data.update == packet.GameStatePacket.CLOCK_TICK:
       #   print('Clock: %i' % data.clock)
     elif packet.type == packet.READY:

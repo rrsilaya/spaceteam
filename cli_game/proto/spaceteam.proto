@@ -20,6 +20,7 @@ message SpaceteamPacket {
       DISCONNECT = 1;
       SECTOR = 2;
       CLOCK_TICK = 3;
+      GAME_OVER = 4;
     }
 
     enum Screen {

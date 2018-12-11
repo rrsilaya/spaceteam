@@ -171,7 +171,7 @@ class Command:
 
   def spawn(self, address):
     self.isResolved = False
-    self.time = 120
+    self.time = 30
     self.command = self.getRandomCommand()
 
     payload = self.packet.CommandPacket()

@@ -130,6 +130,23 @@ class App:
     self.games[lobby_id].checkResolved(data.panel, data.command)
 
 
+  def GameOver(self, lobby_id):
+
+    payload = self.packet.GameStatePacket()
+    payload.type = self.packet.GAME_STATE
+    payload.update = self.packet.GameStatePacket.GAME_OVER
+    self.connection.broadcast(self.games[lobby_id].players, payload)
+
+    for player in self.games[lobby_id].players:
+      _id = SpaceTeam.getPlayerId((player['ip_addr'], player['port']))
+
+      if _id in self.players:
+        del(self.players[_id])
+    
+    del(self.games[lobby_id])
+
+    print("GAME OVER")
+
   def parsePacket(self, data, address):
     self.packet.ParseFromString(data)
 

@@ -63,10 +63,8 @@ class SpaceTeam:
     
     # if self.life > 100:
     #   self.life = 100
-
-
-
     print('[LIFE] Life Remaining: {}'.format(self.life))
+
 
   def checkResolved(self, panel, command):
     for cmd in range(len(self.commands)):
@@ -91,4 +89,7 @@ class SpaceTeam:
           self.commands[cmd] = random.sample(panels, 1)[0]
           self.commands[cmd].spawn(address)
     if(self.life) == 0:
-      print("End Game")
+      for cmd in range(len(self.commands)):
+          self.commands[cmd].isResolved = True
+          print("Resolved GAME OVER")
+      self.server.GameOver(self.lobby)
