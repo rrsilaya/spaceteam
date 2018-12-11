@@ -15,10 +15,8 @@ class Ship(tk.Canvas):
     tk.Canvas.__init__(self, root, width=700, height=600, bd=0, highlightthickness=0, bg='black')
     self.root = root
 
-    self.controls = {
-      'HSWITCH1': False,
-      'VSWITCH1': False,
-    }
+    self.gameConnection = self.root.gameConnection
+    self.udpPacket = self.root.udpPacket
 
     self._loadView()
     self._preparePanels()
