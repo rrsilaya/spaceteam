@@ -2,7 +2,7 @@ import tkinter as tk
 import menu
 import chat
 
-from game import WaitingRoom, Ship
+from game import WaitingRoom, Ship, Win, Lose
 
 class Lobby(tk.Frame):
   def __init__(self, root):
@@ -48,6 +48,11 @@ class Lobby(tk.Frame):
         # Update clock
         self.gameData['currentTime'] = data.clock
         self.gameData['totalTime'] = data.total_time
+      elif data.update == p.GameStatePacket.GAME_OVER:
+        if data.isWin:
+          self.changeGameScreen(Win)
+        else:
+          self.changeGameScreen(Lose)
     elif p.type == p.COMMAND:
       data = Lobby.parsePacket(p.CommandPacket, data)
 
