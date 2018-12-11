@@ -32,7 +32,7 @@ class Welcome(tk.Canvas):
     self.create_text(
       500,
       350,
-      text='Spaceteam is a cooperative game played with 2-8 people in the',
+      text='Spaceteam is a cooperative game played with 3-4 people in the',
       fill=colors.GREEN,
       font=_getFont('body2')
     )
