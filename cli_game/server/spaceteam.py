@@ -18,30 +18,35 @@ class SpaceTeam:
     self.givenCommands = BASE_COMMAND_COUNT
     self.life = 100
 
-<<<<<<< HEAD
     self.packet = SpaceteamPacket()
 
-    self.collection_commands = [
+    self.collection_commands0 = [
       commands.types.CALCIUM_RAZOR,
-      commands.types.LORENTZ_WHITTLER,
-      commands.types.KILOBYPASS_TRANSFORMER,
-      commands.types.IODINE_SHOWER,
-      commands.types.CONTRACTING_PROPELLER,
-      commands.types.QUASIPADDLE,
-      commands.types.HOLOSPINDLE,
-      commands.types.ARCBALL_PENDULUM,
-      commands.types.PRESSURIZED_VARNISH,
-      commands.types.ORBRING,
-      commands.types.FLUXLOOSENER_INDUCER,
-      commands.types.PROTOLUBE_OPTIMIZER,
-      commands.types.PSILOCYBIN_CAPACITOR,
       commands.types.SALTY_CANISTER,
-      commands.types.ALTITUDE_OPERATOR,
       commands.types.WAVEFORM_COLLIDER,
+      commands.types.PROTOLUBE_OPTIMIZER,
+      commands.types.QUASIPADDLE,
+      commands.types.PSILOCYBIN_CAPACITOR,
+      commands.types.ARCBALL_PENDULUM
+    ]
+    self.collection_commands1 =[  
+      commands.types.LORENTZ_WHITTLER,
       commands.types.ALPHA_WAVE,
+      commands.types.HOLOSPINDLE,
+      commands.types.CONTRACTING_PROPELLER,
+      commands.types.IODINE_SHOWER,
+      commands.types.ORBRING
+    ]
+    self.collection_commands2 =[        
+      commands.types.KILOBYPASS_TRANSFORMER,
+      commands.types.ALTITUDE_OPERATOR,
       commands.types.GLYCOL_PUMP,
+      commands.types.FLUXLOOSENER_INDUCER,
+      commands.types.PRESSURIZED_VARNISH,
       commands.types.CABIN_FAN,
-      commands.types.GAMMA_RADIATOR,
+      commands.types.GAMMA_RADIATOR
+    ]
+    self.collection_commands3 =[
       commands.types.THERMONUCLEAR_RESONATOR,
       commands.types.DOCKING_PROBE,
       commands.types.SCE_POWER,
@@ -51,8 +56,6 @@ class SpaceTeam:
       commands.types.INT_LIGHTS
     ]
 
-=======
->>>>>>> c149598b115901bf1244ae55c65bf769c8786b93
   def getPlayerId(address):
     ip_addr, port = address
 
@@ -101,7 +104,6 @@ class SpaceTeam:
 
     print('[LIFE] Life Remaining: {}'.format(self.life))
 
-<<<<<<< HEAD
   def checkResolved(self, panel, command):
     for cmd in range(len(self.commands)):
       if(self.commands[cmd].command.upper() == command.upper()) and (self.commands[cmd].name.upper() == panel.upper()):
@@ -118,10 +120,6 @@ class SpaceTeam:
     panels = self.collection_commands
     print(panels)
     
-=======
-  def start(self):
-    panels = random.sample([ i for i in range(15) ], self.givenCommands)
->>>>>>> c149598b115901bf1244ae55c65bf769c8786b93
     panels = [ Command(panel, self.server, updateLife=self.updateLife) for panel in panels ]
 
     self.commands = random.sample(panels, len(self.players))
