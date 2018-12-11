@@ -56,8 +56,14 @@ if __name__ == '__main__':
         print('A player has  disconnected. PLAYERS: %i' % data.player_count)
       elif data.update == packet.GameStatePacket.SECTOR:
         print('Starting sector %i' % data.sector)
+<<<<<<< HEAD
       # elif data.update == packet.GameStatePacket.CLOCK_TICK:
       #   print('Clock: %i' % data.clock)
+=======
+      elif data.update == packet.GameStatePacket.CLOCK_TICK:
+        print('Clock: %i' % data.clock)
+        print('total time' + str(data.total_time))
+>>>>>>> add total time to GAME_STATE_PACKER
     elif packet.type == packet.READY:
       data = _parse(packet.ReadyPacket, data)
       
