@@ -56,14 +56,14 @@ class Command:
     elif type == types.KILOBYPASS_TRANSFORMER:
       self._setInit(
         'Kilobypass Transformer',
-        ['Engage', 'Disengage']
+        ['Engage', 'Disengage'],
         CHOICE
       )
     elif type == types.IODINE_SHOWER:
       self._setInit(
         'Iodine Shower',
         [i + 1 for i in range(3)],
-        NUMBERICS
+        NUMERIC
       )
     elif type == types.CONTRACTING_PROPELLER:
       self._setInit(
@@ -209,11 +209,11 @@ class Command:
         [types.NO_COMMAND],
         types.NO_COMMAND
       )
-    
 
 
     self.server = server
     self.packet = SpaceteamPacket()
+    print(self.states)
     self.state = self.states[0]
     self.time = 0
     self.isResolved = True

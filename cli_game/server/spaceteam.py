@@ -23,6 +23,36 @@ class SpaceTeam:
 
     self.packet = SpaceteamPacket()
 
+    self.collection_commands = [
+      commands.types.CALCIUM_RAZOR,
+      commands.types.LORENTZ_WHITTLER,
+      commands.types.KILOBYPASS_TRANSFORMER,
+      commands.types.IODINE_SHOWER,
+      commands.types.CONTRACTING_PROPELLER,
+      commands.types.QUASIPADDLE,
+      commands.types.HOLOSPINDLE,
+      commands.types.ARCBALL_PENDULUM,
+      commands.types.PRESSURIZED_VARNISH,
+      commands.types.ORBRING,
+      commands.types.FLUXLOOSENER_INDUCER,
+      commands.types.PROTOLUBE_OPTIMIZER,
+      commands.types.PSILOCYBIN_CAPACITOR,
+      commands.types.SALTY_CANISTER,
+      commands.types.ALTITUDE_OPERATOR,
+      commands.types.WAVEFORM_COLLIDER,
+      commands.types.ALPHA_WAVE,
+      commands.types.GLYCOL_PUMP,
+      commands.types.CABIN_FAN,
+      commands.types.GAMMA_RADIATOR,
+      commands.types.THERMONUCLEAR_RESONATOR,
+      commands.types.DOCKING_PROBE,
+      commands.types.SCE_POWER,
+      commands.types.SUIT_COMPOSITION,
+      commands.types.H2O_FLOW,
+      commands.types.WASTE_DUMP,
+      commands.types.INT_LIGHTS
+    ]
+
   def getPlayerId(address):
     ip_addr, port = address
 
@@ -75,7 +105,7 @@ class SpaceTeam:
 
   def checkResolved(self, panel, command):
     for cmd in range(len(self.commands)):
-      if(self.commands[cmd].command == command) and (self.commands[cmd].name == panel):
+      if(self.commands[cmd].command.upper() == command.upper()) and (self.commands[cmd].name.upper() == panel.upper()):
         self.commands[cmd].isResolved = True
         self.updateLife(25)
         print("Successfully Resolved", panel, " to ", command)
@@ -86,7 +116,10 @@ class SpaceTeam:
     no_command = Command(commands.types.NO_COMMAND,self.server)
     no_command.spawn(self.players)
 
-    panels = random.sample([ i for i in range(15) ], self.givenCommands)
+    panels = self.collection_commands
+    print(panels)
+    return 0
+    
     panels = [ Command(panel, self.server, updateLife=self.updateLife) for panel in panels ]
 
     self.commands = random.sample(panels, len(self.players))
