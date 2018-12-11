@@ -37,6 +37,7 @@ class App:
     self.connection.broadcast(self.games[data.lobby_id].players, payload)
 
     self.players[SpaceTeam.getPlayerId(address)] = data.lobby_id
+    print(self.games['1'].players)
     print('[CONNECT] New player connected to lobby!')
 
   def _handleDisconnect(self, data, address):

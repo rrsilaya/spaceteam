@@ -84,9 +84,7 @@ class SpaceTeam:
 
   def start(self):
     no_command = Command(commands.types.NO_COMMAND,self.server)
-    for player in self.players:
-      address = (player['ip_addr'],player['port'])
-      no_command.spawn(address)
+    no_command.spawn(self.players)
 
     panels = random.sample([ i for i in range(15) ], self.givenCommands)
     panels = [ Command(panel, self.server, updateLife=self.updateLife) for panel in panels ]

@@ -165,12 +165,18 @@ class Command:
     payload.update = self.packet.GameStatePacket.CLOCK_TICK
     payload.screen = self.packet.GameStatePacket.SHIP
 
-    self.server.connection.send(address, payload)
+    if self.command != str(types.NO_COMMAND):
+      self.server.connection.send(address, payload)
+    else:
+      self.server.connection.broadcast(address, payload)
     while self.time > 0 and not self.isResolved:
       self.time -= 1
       payload.clock = self.time
 
-      self.server.connection.send(address, payload)
+      if self.command != str(types.NO_COMMAND):
+        self.server.connection.send(address, payload)
+      else:
+        self.server.connection.broadcast(address, payload)
       sleep(0.1)
 
     if not self.isResolved and self.command != str(types.NO_COMMAND):
@@ -180,7 +186,7 @@ class Command:
 
   def spawn(self, address):
     self.isResolved = False
-    self.time = 120
+    self.time = 40
 
     if (self.type != types.NO_COMMAND):
       self.command = self.getRandomCommand()
@@ -194,8 +200,9 @@ class Command:
 
     print('> {}: {}'.format(self.name, payload.command))
 
-    self.server.connection.send(address, payload)
     if (self.type != types.NO_COMMAND):
+      self.server.connection.send(address, payload)
       Thread(target=self.tick, args=[address]).start()
     else:
+      self.server.connection.broadcast(address, payload)
       self.tick(address)
