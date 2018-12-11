@@ -50,8 +50,13 @@ _SPACETEAMPACKET_GAMESTATEPACKET_UPDATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
+<<<<<<< HEAD
   serialized_start=332,
   serialized_end=397,
+=======
+  serialized_start=312,
+  serialized_end=377,
+>>>>>>> 7fa6ddcbe44ba81e6d08b2492c458aaf25e90bf7
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_GAMESTATEPACKET_UPDATE)
 
@@ -80,8 +85,13 @@ _SPACETEAMPACKET_GAMESTATEPACKET_SCREEN = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
+<<<<<<< HEAD
   serialized_start=399,
   serialized_end=460,
+=======
+  serialized_start=379,
+  serialized_end=440,
+>>>>>>> 7fa6ddcbe44ba81e6d08b2492c458aaf25e90bf7
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_GAMESTATEPACKET_SCREEN)
 
@@ -114,8 +124,13 @@ _SPACETEAMPACKET_PACKETTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
+<<<<<<< HEAD
   serialized_start=788,
   serialized_end=869,
+=======
+  serialized_start=768,
+  serialized_end=849,
+>>>>>>> 7fa6ddcbe44ba81e6d08b2492c458aaf25e90bf7
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_PACKETTYPE)
 
@@ -169,6 +184,7 @@ _SPACETEAMPACKET_GAMESTATEPACKET = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+<<<<<<< HEAD
     _descriptor.FieldDescriptor(
       name='screen', full_name='SpaceteamPacket.GameStatePacket.screen', index=6,
       number=7, type=14, cpp_type=8, label=1,
@@ -176,6 +192,8 @@ _SPACETEAMPACKET_GAMESTATEPACKET = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+=======
+>>>>>>> 7fa6ddcbe44ba81e6d08b2492c458aaf25e90bf7
   ],
   extensions=[
   ],
