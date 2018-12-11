@@ -1,5 +1,6 @@
 import tkinter as tk
 from utils.fonts import _getFont
+from re import search
 
 Y_OFFSET = 220
 PANEL_HEIGHT = 127

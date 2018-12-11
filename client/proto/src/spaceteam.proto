@@ -35,8 +35,9 @@ message SpaceteamPacket {
     optional int32 sector = 3;
     optional int32 clock = 4;
     optional int32 total_time = 5;
-    required GameStatePacket.Update update = 6;
-    optional GameStatePacket.Screen screen = 7;
+    optional bool isWin = 6;
+    required GameStatePacket.Update update = 7;
+    optional GameStatePacket.Screen screen = 8;
   }
 
   message ConnectPacket {
