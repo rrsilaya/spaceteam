@@ -77,18 +77,18 @@ class Ship(tk.Canvas):
     self.create_text(30, 150, text='▶  ' + self.gameData['command'], fill='white', font=_getFont('heading'), anchor=tk.W)
 
   def clockTick(self):
-    tick = 50
+    while True:
+      tick = self.gameData['currentTime']
+      total = self.gameData['totalTime']
 
-    while tick >= 0:
       c = self.coords('TIMER')
-      self.coords('TIMER', c[0], c[1], tick * 14, c[3])
+      self.coords('TIMER', c[0], c[1], (tick // total) * 700, c[3])
 
-      if c[2] == 420:
+      if c[2] < 420 and c[2] > 210:
         self.itemconfig('TIMER', fill='yellow')
-      elif c[2] == 210:
+      elif c[2] < 210:
         self.itemconfig('TIMER', fill='red')
 
-      tick -= 1
       sleep(0.1)
 
   def _prepareControls(self, player):
