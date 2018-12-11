@@ -37,7 +37,7 @@ class App:
     self.connection.broadcast(self.games[data.lobby_id].players, payload)
 
     self.players[SpaceTeam.getPlayerId(address)] = data.lobby_id
-    print(self.games['1'].players)
+    print(self.games[data.lobby_id].players)
     print('[CONNECT] New player connected to lobby!')
 
   def _handleDisconnect(self, data, address):
@@ -81,7 +81,7 @@ class App:
     if data.toggle: print('[READY] Player {} is ready!'.format(port))
     else: print('[READY] Player {} is not ready!'.format(port))
 
-    if ready:# and len(self.games[lobby_id].players) > 1:
+    if ready and len(self.games[lobby_id].players) > 1:
       
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
