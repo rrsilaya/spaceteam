@@ -1,4 +1,4 @@
-from server import UdpServer, SpaceTeam, commands
+from server import UdpServer, SpaceTeam
 from proto.spaceteam_pb2 import SpaceteamPacket
 from time import sleep
 from threading import Thread
@@ -37,7 +37,6 @@ class App:
     self.connection.broadcast(self.games[data.lobby_id].players, payload)
 
     self.players[SpaceTeam.getPlayerId(address)] = data.lobby_id
-    print(self.games[data.lobby_id].players)
     print('[CONNECT] New player connected to lobby!')
 
   def _handleDisconnect(self, data, address):
@@ -62,8 +61,6 @@ class App:
         del(self.players[player])
         print('[DISCONNECT] Player has disconnected from the lobby!')
 
-
-
   def _handleReady(self, data, address):
     ip_addr, port = address
     data = App._parse(self.packet.ReadyPacket, data)
@@ -82,16 +79,25 @@ class App:
     else: print('[READY] Player {} is not ready!'.format(port))
 
     if ready and len(self.games[lobby_id].players) > 1:
-      
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.sector = 1
       payload.update = self.packet.GameStatePacket.SECTOR
 
       self.connection.broadcast(self.games[lobby_id].players, payload)
+      Thread(
+        target=self._clockTick,
+        args=[
+          lobby_id,
+          self.games[lobby_id].players,
+          30
+        ],
+        kwargs={
+          'screen': self.packet.GameStatePacket.SECTOR,
+          'callback': self.games[lobby_id].start
+        }
+      ).start()
 
-      self.games[lobby_id].start()
-      
   def _clockTick(self, lobby, address, time, **kw):
     self.games[lobby].clock = time
 
@@ -114,14 +120,6 @@ class App:
     if 'callback' in kw:
       kw['callback']()
 
-  def _handleCommand(self, data, address):
-    ip_addr, port = address
-    data = App._parse(self.packet.CommandPacket, data)
-
-    lobby_id = self.players[SpaceTeam.getPlayerId(address)]
-    self.games[lobby_id].checkResolved(data.panel, data.command)
-
-
   def parsePacket(self, data, address):
     self.packet.ParseFromString(data)
 
@@ -131,8 +129,6 @@ class App:
       self._handleDisconnect(data, address)
     elif self.packet.type == self.packet.READY:
       self._handleReady(data, address)
-    elif self.packet.type == self.packet.COMMAND:
-      self._handleCommand(data, address)
 
   def start(self):
     self.connection.listen(self.parsePacket)
