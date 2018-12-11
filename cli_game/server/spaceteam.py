@@ -100,5 +100,9 @@ class SpaceTeam:
           address = (self.players[cmd]['ip_addr'], self.players[cmd]['port'])
           self.commands[cmd] = random.sample(panels, 1)[0]
           self.commands[cmd].spawn(address)
+<<<<<<< HEAD
     if(self.life) == 0:
       print("End Game")
+=======
+  
+>>>>>>> c7e2817ff07502456d3d6f48d7ae7fc17c7e91ca

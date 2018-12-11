@@ -180,8 +180,12 @@ class Command:
 
   def spawn(self, address):
     self.isResolved = False
+<<<<<<< HEAD
     self.time = 120
 
+=======
+    self.time = 50
+>>>>>>> c7e2817ff07502456d3d6f48d7ae7fc17c7e91ca
     if (self.type != types.NO_COMMAND):
       self.command = self.getRandomCommand()
     else:
