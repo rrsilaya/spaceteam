@@ -2,7 +2,7 @@ import tkinter as tk
 import menu
 import chat
 
-from game import WaitingRoom
+from game import WaitingRoom, Ship
 
 class Lobby(tk.Frame):
   def __init__(self, root):
@@ -13,7 +13,15 @@ class Lobby(tk.Frame):
     self.udpPacket = self.root.udpPacket
     self.gameConnection = self.root.gameConnection
 
-    self.gameData = { 'screen': 'LOBBY', 'room': self.root.gameRoom }
+    self.gameData = {
+      'screen': 'LOBBY',
+      'room': self.root.gameRoom,
+
+      'currentTime': 50,
+      'totalTime': 50,
+
+      'command': 'Get ready for incoming commands...'
+    }
     self._loadView()
     self.gameConnection.listen(self.streamParser)
 
@@ -36,6 +44,16 @@ class Lobby(tk.Frame):
 
         if self.gameData['screen'] == 'LOBBY' and 'renderPlayers' in self.gameData:
           self.gameData['renderPlayers'](data.player_count)
+      elif data.update == p.GameStatePacket.CLOCK_TICK:
+        # Update clock
+        self.gameData['currentTime'] = data.clock
+    elif p.type == p.COMMAND:
+      data = Lobby.parsePacket(p.CommandPacket, data)
+
+      if data.command == 'NO_COMMAND':
+        # Start Game
+        self.gameData['room'] = 'SHIP'
+        self.changeGameScreen(Ship)
 
   def changeGameScreen(self, screen):
     before = self.game

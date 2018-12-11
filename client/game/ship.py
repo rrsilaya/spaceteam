@@ -17,6 +17,7 @@ class Ship(tk.Canvas):
 
     self.gameConnection = self.root.gameConnection
     self.udpPacket = self.root.udpPacket
+    self.gameData = self.root.gameData
 
     self._loadView()
     self._preparePanels()
@@ -73,7 +74,7 @@ class Ship(tk.Canvas):
     self.create_image(0, 195, image=self.timer_empty, anchor=tk.NW)
     self.create_image(480, 195, image=self.timer_empty, anchor=tk.NW)
 
-    self.create_text(30, 150, text='▶  Engage Elgenthrottle', fill='white', font=_getFont('heading'), anchor=tk.W)
+    self.create_text(30, 150, text='▶  ' + self.gameData['command'], fill='white', font=_getFont('heading'), anchor=tk.W)
 
   def clockTick(self):
     tick = 50
