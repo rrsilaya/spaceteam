@@ -17,6 +17,16 @@ class HorizontalSlider:
 
     self._loadPanel()
 
+  def _sendPacket(self):
+    packet = self.root.udpPacket
+
+    payload = packet.CommandPacket()
+    payload.type = packet.COMMAND
+    payload.command = self.id
+    payload.panel = str(self.index)
+
+    self.root.gameConnection.send(payload)
+
   def handleHSlider(self, event):
     c = self.root.coords('{}_GUIDE'.format(self.id))
 
@@ -52,6 +62,7 @@ class HorizontalSlider:
     ct = self.root.coords(self.id)
     self.root.coords(self.id, start + (index * multiplier), ct[1])
     self.index = index
+    self._sendPacket()
 
   def _loadPanel(self):
     hslider = tk.PhotoImage(file='assets/controls/SliderH.png')
