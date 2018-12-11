@@ -56,11 +56,6 @@ class Ship(tk.Canvas):
     self.circuits = circuits.zoom(2)
     self.create_image(700, Y_OFFSET, image=self.circuits, anchor=tk.NE)
 
-    # self.addPanel(width=1, height=1, gridPos=(1, 1))
-    self.addPanel(width=1, height=1, gridPos=(2, 1))
-    self.addPanel(width=3, height=1, gridPos=(1, 2))
-    # self.addPanel(width=1, height=1, gridPos=(4, 2))
-
   def _loadView(self):
     ship = tk.PhotoImage(file='assets/elements/ship-small.png')
     instruction = tk.PhotoImage(file='assets/elements/instruction.png')
