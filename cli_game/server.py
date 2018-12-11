@@ -61,6 +61,8 @@ class App:
         del(self.players[player])
         print('[DISCONNECT] Player has disconnected from the lobby!')
 
+
+
   def _handleReady(self, data, address):
     ip_addr, port = address
     data = App._parse(self.packet.ReadyPacket, data)
@@ -120,6 +122,14 @@ class App:
     if 'callback' in kw:
       kw['callback']()
 
+  def _handleCommand(self, data, address):
+    ip_addr, port = address
+    data = App._parse(self.packet.CommandPacket, data)
+
+    lobby_id = self.players[SpaceTeam.getPlayerId(address)]
+    self.games[lobby_id].checkResolved(data.panel, data.command)
+
+
   def parsePacket(self, data, address):
     self.packet.ParseFromString(data)
 
@@ -129,6 +139,8 @@ class App:
       self._handleDisconnect(data, address)
     elif self.packet.type == self.packet.READY:
       self._handleReady(data, address)
+    elif self.packet.type == self.packet.COMMAND:
+      self._handleCommand(data, address)
 
   def start(self):
     self.connection.listen(self.parsePacket)

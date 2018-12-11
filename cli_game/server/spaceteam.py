@@ -60,11 +60,22 @@ class SpaceTeam:
 
   def updateLife(self, amount):
     self.life += amount
+    
+    # if self.life > 100:
+    #   self.life = 100
 
-    if self.life > 100:
-      self.life = 100
+
 
     print('[LIFE] Life Remaining: {}'.format(self.life))
+
+  def checkResolved(self, panel, command):
+    for cmd in range(len(self.commands)):
+      if(self.commands[cmd].command == command) and (self.commands[cmd].name == panel):
+        self.commands[cmd].isResolved = True
+        self.updateLife(25)
+        print("Successfully Resolved", panel, " to ", command)
+        break
+
 
   def start(self):
     panels = random.sample([ i for i in range(15) ], self.givenCommands)
@@ -79,3 +90,5 @@ class SpaceTeam:
           address = (self.players[cmd]['ip_addr'], self.players[cmd]['port'])
           self.commands[cmd] = random.sample(panels, 1)[0]
           self.commands[cmd].spawn(address)
+    if(self.life) == 0:
+      print("End Game")
