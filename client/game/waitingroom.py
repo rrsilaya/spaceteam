@@ -1,7 +1,6 @@
 import tkinter as tk
 
 from utils.fonts import _getFont
-from game.sector import Sector
 from threading import Thread
 from time import sleep
 from uuid import uuid4
