@@ -1,5 +1,6 @@
 import tkinter as tk
 from utils.fonts import _getFont
+from re import search
 
 Y_OFFSET = 220
 PANEL_HEIGHT = 127
@@ -17,11 +18,23 @@ class ButtonGroup:
 
     self._loadPanel()
 
+  def _sendPacket(self, tag):
+    packet = self.root.udpPacket
+    panel = int(search(r'([12])L?$', tag)[1])
+
+    payload = packet.CommandPacket()
+    payload.type = packet.COMMAND
+    payload.command = self.id
+    payload.panel = self.buttons[panel - 1].upper()
+
+    self.root.gameConnection.send(payload)
+
   def toggleButton(self, tag, flag):
     if flag:
       self.root.itemconfig(tag, image=self.root.btn_on)
     else:
       self.root.itemconfig(tag, image=self.root.btn_off)
+      self._sendPacket(tag)
 
   def _loadPanel(self):
     btn_off = tk.PhotoImage(file='assets/controls/TextButtonOff.png')

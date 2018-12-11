@@ -17,6 +17,16 @@ class VerticalSlider:
 
     self._loadPanel()
 
+  def _sendPacket(self):
+    packet = self.root.udpPacket
+
+    payload = packet.CommandPacket()
+    payload.type = packet.COMMAND
+    payload.command = self.id
+    payload.panel = str(self.index)
+
+    self.root.gameConnection.send(payload)
+
   def handleVSlider(self, event):
     c = self.root.coords('{}_GUIDE'.format(self.id))
 
@@ -52,6 +62,7 @@ class VerticalSlider:
     ct = self.root.coords(self.id)
     self.root.coords(self.id, ct[0], start + (index * multiplier))
     self.index = index
+    self._sendPacket()
 
   def _loadPanel(self):
     vslider = tk.PhotoImage(file='assets/controls/SliderV.png')
