@@ -9,7 +9,7 @@ CHOICE = 2
 SINGLE = 3
 
 class types:
-  NO_COMMAND = -1
+  NO_COMMAND = "NO_COMMAND"
   CALCIUM_RAZOR = 0
   LORENTZ_WHITTLER = 1
   KILOBYPASS_TRANSFORMER = 2
@@ -125,7 +125,7 @@ class Command:
       )
     elif type == types.NO_COMMAND:
       self._setInit(
-        'No Command',
+        types.NO_COMMAND,
         [types.NO_COMMAND],
         types.NO_COMMAND
       )
@@ -165,7 +165,7 @@ class Command:
     payload.update = self.packet.GameStatePacket.CLOCK_TICK
     payload.screen = self.packet.GameStatePacket.SHIP
 
-    if self.command != str(types.NO_COMMAND):
+    if self.command != types.NO_COMMAND:
       self.server.connection.send(address, payload)
     else:
       self.server.connection.broadcast(address, payload)
@@ -173,13 +173,13 @@ class Command:
       self.time -= 1
       payload.clock = self.time
 
-      if self.command != str(types.NO_COMMAND):
+      if self.command != types.NO_COMMAND:
         self.server.connection.send(address, payload)
       else:
         self.server.connection.broadcast(address, payload)
       sleep(0.1)
 
-    if not self.isResolved and self.command != str(types.NO_COMMAND):
+    if not self.isResolved and self.command != types.NO_COMMAND:
       print('Failed to execute command <{}: {}>'.format(self.name, self.command))
       self.callbacks['updateLife'](-25)
       self.isResolved = True
@@ -191,7 +191,7 @@ class Command:
     if (self.type != types.NO_COMMAND):
       self.command = self.getRandomCommand()
     else:
-      self.command = str(types.NO_COMMAND)
+      self.command = types.NO_COMMAND
 
     payload = self.packet.CommandPacket()
     payload.type = self.packet.COMMAND
