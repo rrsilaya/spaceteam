@@ -54,7 +54,8 @@ message SpaceteamPacket {
 
   message CommandPacket {
     required PacketType type = 1;
-    required string panel = 2;
+    optional string panel = 2;
     required string command = 3;
   }
+
 }
