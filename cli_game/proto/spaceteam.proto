@@ -33,8 +33,9 @@ message SpaceteamPacket {
     optional int32 player_count = 2;
     optional int32 sector = 3;
     optional int32 clock = 4;
-    required GameStatePacket.Update update = 5;
-    optional GameStatePacket.Screen screen = 6;
+    optional int32 total_time = 5;
+    required GameStatePacket.Update update = 6;
+    optional GameStatePacket.Screen screen = 7;
   }
 
   message ConnectPacket {

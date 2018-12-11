@@ -57,6 +57,7 @@ if __name__ == '__main__':
         print('Starting sector %i' % data.sector)
       elif data.update == packet.GameStatePacket.CLOCK_TICK:
         print('Clock: %i' % data.clock)
+        print('total time' + str(data.total_time))
     elif packet.type == packet.READY:
       data = _parse(packet.ReadyPacket, data)
       

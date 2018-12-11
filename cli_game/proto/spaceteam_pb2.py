@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='spaceteam.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x0fspaceteam.proto\"\xbd\x06\n\x0fSpaceteamPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x1a\xe5\x02\n\x0fGameStatePacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x14\n\x0cplayer_count\x18\x02 \x01(\x05\x12\x0e\n\x06sector\x18\x03 \x01(\x05\x12\r\n\x05\x63lock\x18\x04 \x01(\x05\x12\x37\n\x06update\x18\x05 \x02(\x0e\x32\'.SpaceteamPacket.GameStatePacket.Update\x12\x37\n\x06screen\x18\x06 \x01(\x0e\x32\'.SpaceteamPacket.GameStatePacket.Screen\"A\n\x06Update\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0e\n\nDISCONNECT\x10\x01\x12\n\n\x06SECTOR\x10\x02\x12\x0e\n\nCLOCK_TICK\x10\x03\"=\n\x06Screen\x12\t\n\x05LOBBY\x10\x00\x12\x0f\n\x0bSECTOR_WAIT\x10\x01\x12\r\n\tSHIP_WAIT\x10\x02\x12\x08\n\x04SHIP\x10\x03\x1aL\n\rConnectPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x10\n\x08lobby_id\x18\x02 \x02(\t\x1a[\n\x0bReadyPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x0e\n\x06toggle\x18\x02 \x02(\x08\x12\x11\n\tplayer_id\x18\x03 \x01(\t\x1a=\n\x10\x44isconnectPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x1aZ\n\rCommandPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\r\n\x05panel\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x02(\t\"Q\n\nPacketType\x12\x0e\n\nGAME_STATE\x10\x00\x12\x0b\n\x07\x43ONNECT\x10\x01\x12\t\n\x05READY\x10\x02\x12\x0e\n\nDISCONNECT\x10\x03\x12\x0b\n\x07\x43OMMAND\x10\x04\x42\x18\n\x05protoB\x0fTcpPacketProtos')
+  serialized_pb=_b('\n\x0fspaceteam.proto\"\xd1\x06\n\x0fSpaceteamPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x1a\xf9\x02\n\x0fGameStatePacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x14\n\x0cplayer_count\x18\x02 \x01(\x05\x12\x0e\n\x06sector\x18\x03 \x01(\x05\x12\r\n\x05\x63lock\x18\x04 \x01(\x05\x12\x12\n\ntotal_time\x18\x05 \x01(\x05\x12\x37\n\x06update\x18\x06 \x02(\x0e\x32\'.SpaceteamPacket.GameStatePacket.Update\x12\x37\n\x06screen\x18\x07 \x01(\x0e\x32\'.SpaceteamPacket.GameStatePacket.Screen\"A\n\x06Update\x12\x0b\n\x07\x43ONNECT\x10\x00\x12\x0e\n\nDISCONNECT\x10\x01\x12\n\n\x06SECTOR\x10\x02\x12\x0e\n\nCLOCK_TICK\x10\x03\"=\n\x06Screen\x12\t\n\x05LOBBY\x10\x00\x12\x0f\n\x0bSECTOR_WAIT\x10\x01\x12\r\n\tSHIP_WAIT\x10\x02\x12\x08\n\x04SHIP\x10\x03\x1aL\n\rConnectPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x10\n\x08lobby_id\x18\x02 \x02(\t\x1a[\n\x0bReadyPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\x0e\n\x06toggle\x18\x02 \x02(\x08\x12\x11\n\tplayer_id\x18\x03 \x01(\t\x1a=\n\x10\x44isconnectPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x1aZ\n\rCommandPacket\x12)\n\x04type\x18\x01 \x02(\x0e\x32\x1b.SpaceteamPacket.PacketType\x12\r\n\x05panel\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x02(\t\"Q\n\nPacketType\x12\x0e\n\nGAME_STATE\x10\x00\x12\x0b\n\x07\x43ONNECT\x10\x01\x12\t\n\x05READY\x10\x02\x12\x0e\n\nDISCONNECT\x10\x03\x12\x0b\n\x07\x43OMMAND\x10\x04\x42\x18\n\x05protoB\x0fTcpPacketProtos')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -50,8 +50,8 @@ _SPACETEAMPACKET_GAMESTATEPACKET_UPDATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=312,
-  serialized_end=377,
+  serialized_start=332,
+  serialized_end=397,
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_GAMESTATEPACKET_UPDATE)
 
@@ -80,8 +80,8 @@ _SPACETEAMPACKET_GAMESTATEPACKET_SCREEN = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=379,
-  serialized_end=440,
+  serialized_start=399,
+  serialized_end=460,
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_GAMESTATEPACKET_SCREEN)
 
@@ -114,8 +114,8 @@ _SPACETEAMPACKET_PACKETTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=768,
-  serialized_end=849,
+  serialized_start=788,
+  serialized_end=869,
 )
 _sym_db.RegisterEnumDescriptor(_SPACETEAMPACKET_PACKETTYPE)
 
@@ -156,15 +156,22 @@ _SPACETEAMPACKET_GAMESTATEPACKET = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='update', full_name='SpaceteamPacket.GameStatePacket.update', index=4,
-      number=5, type=14, cpp_type=8, label=2,
+      name='total_time', full_name='SpaceteamPacket.GameStatePacket.total_time', index=4,
+      number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='screen', full_name='SpaceteamPacket.GameStatePacket.screen', index=5,
-      number=6, type=14, cpp_type=8, label=1,
+      name='update', full_name='SpaceteamPacket.GameStatePacket.update', index=5,
+      number=6, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='screen', full_name='SpaceteamPacket.GameStatePacket.screen', index=6,
+      number=7, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -184,7 +191,7 @@ _SPACETEAMPACKET_GAMESTATEPACKET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=83,
-  serialized_end=440,
+  serialized_end=460,
 )
 
 _SPACETEAMPACKET_CONNECTPACKET = _descriptor.Descriptor(
@@ -220,8 +227,8 @@ _SPACETEAMPACKET_CONNECTPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=442,
-  serialized_end=518,
+  serialized_start=462,
+  serialized_end=538,
 )
 
 _SPACETEAMPACKET_READYPACKET = _descriptor.Descriptor(
@@ -264,8 +271,8 @@ _SPACETEAMPACKET_READYPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=611,
+  serialized_start=540,
+  serialized_end=631,
 )
 
 _SPACETEAMPACKET_DISCONNECTPACKET = _descriptor.Descriptor(
@@ -294,8 +301,8 @@ _SPACETEAMPACKET_DISCONNECTPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=613,
-  serialized_end=674,
+  serialized_start=633,
+  serialized_end=694,
 )
 
 _SPACETEAMPACKET_COMMANDPACKET = _descriptor.Descriptor(
@@ -338,8 +345,8 @@ _SPACETEAMPACKET_COMMANDPACKET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=676,
-  serialized_end=766,
+  serialized_start=696,
+  serialized_end=786,
 )
 
 _SPACETEAMPACKET = _descriptor.Descriptor(
@@ -370,7 +377,7 @@ _SPACETEAMPACKET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=20,
-  serialized_end=849,
+  serialized_end=869,
 )
 
 _SPACETEAMPACKET_GAMESTATEPACKET.fields_by_name['type'].enum_type = _SPACETEAMPACKET_PACKETTYPE

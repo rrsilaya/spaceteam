@@ -161,6 +161,7 @@ class Command:
     payload = self.packet.GameStatePacket()
     payload.type = self.packet.GAME_STATE
     payload.clock = self.time
+    payload.total_time = self.time
     payload.update = self.packet.GameStatePacket.CLOCK_TICK
     payload.screen = self.packet.GameStatePacket.SHIP
 
