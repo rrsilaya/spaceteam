@@ -1,6 +1,8 @@
 import tkinter as tk
 from utils.fonts import _getFont
 
+from game.panel import Switch, BinaryButton, ButtonGroup, VerticalSlider, HorizontalSlider
+
 from time import sleep
 from threading import Thread
 
@@ -54,15 +56,6 @@ class Ship(tk.Canvas):
     self.circuits = circuits.zoom(2)
     self.create_image(700, Y_OFFSET, image=self.circuits, anchor=tk.NE)
 
-    self.addPanel(width=2, height=2, gridPos=(3, 0))
-    self.addPanel(width=1, height=1, gridPos=(0, 0))
-    self.addPanel(width=1, height=2, gridPos=(0, 1))
-    self.addPanel(width=2, height=1, gridPos=(1, 0))
-    # self.addPanel(width=1, height=1, gridPos=(1, 1))
-    self.addPanel(width=1, height=1, gridPos=(2, 1))
-    self.addPanel(width=3, height=1, gridPos=(1, 2))
-    # self.addPanel(width=1, height=1, gridPos=(4, 2))
-
   def _loadView(self):
     ship = tk.PhotoImage(file='assets/elements/ship-small.png')
     instruction = tk.PhotoImage(file='assets/elements/instruction.png')
@@ -102,179 +95,11 @@ class Ship(tk.Canvas):
       tick -= 1
       sleep(0.1)
 
-  def toggleVSwitch(self, tag):
-    if self.controls[tag]:
-      self.itemconfig(tag, image=self.vswitch_off)
-    else:
-      self.itemconfig(tag, image=self.vswitch_on)
-
-    self.controls[tag] = not self.controls[tag]
-
-  def toggleHSwitch(self, tag):
-    if self.controls[tag]:
-      self.itemconfig(tag, image=self.hswitch_off)
-    else:
-      self.itemconfig(tag, image=self.hswitch_on)
-
-    self.controls[tag] = not self.controls[tag]
-
-  def toggleBoxButton(self, tag, flag):
-    if flag:
-      self.itemconfig(tag, image=self.box_on)
-    else:
-      self.itemconfig(tag, image=self.box_off)
-
-  def toggleButton(self, tag, flag):
-    if flag:
-      self.itemconfig(tag, image=self.btn_on)
-    else:
-      self.itemconfig(tag, image=self.btn_off)
-
-  def handleHSlider(self, tag, guide, event):
-    c = self.coords(guide)
-
-    start = c[0]
-    end = c[2]
-    interval = end - start
-
-    if event.x <= start:
-      coord = start
-    elif event.x >= end:
-      coord = end
-    else:
-      coord = event.x
-
-    ct = self.coords(tag)
-    self.coords(tag, coord, ct[1])
-
-  def handleHSliderDrop(self, tag, guide, intervals, event):
-    c = self.coords(guide)
-
-    start = c[0]
-    end = c[2]
-    interval = end - start
-    multiplier = interval / intervals
-
-    if event.x <= start:
-      index = 0
-    elif event.x >= end:
-      index = intervals
-    else:
-      index = round((event.x - start) / multiplier)
-
-    ct = self.coords(tag)
-    self.coords(tag, start + (index * multiplier), ct[1])
-
-  def handleVSlider(self, tag, guide, event):
-    c = self.coords(guide)
-
-    start = c[1]
-    end = c[3]
-    interval = end - start
-
-    if event.y <= start:
-      coord = start
-    elif event.y >= end:
-      coord = end
-    else:
-      coord = event.y
-
-    ct = self.coords(tag)
-    self.coords(tag, ct[0], coord)
-
-  def handleVSliderDrop(self, tag, guide, intervals, event):
-    c = self.coords(guide)
-
-    start = c[1]
-    end = c[3]
-    interval = end - start
-    multiplier = interval / intervals
-
-    if event.y <= start:
-      index = 0
-    elif event.y >= end:
-      index = intervals
-    else:
-      index = round((event.y - start) / multiplier)
-
-    ct = self.coords(tag)
-    self.coords(tag, ct[0], start + (index * multiplier))
-
   def _prepareControls(self):
-    vswitch_off = tk.PhotoImage(file='assets/ui/verticalswitch-off.png')
-    vswitch_on = tk.PhotoImage(file='assets/ui/verticalswitch-on.png')
-    hswitch_off = tk.PhotoImage(file='assets/ui/horizontalswitch-off.png')
-    hswitch_on = tk.PhotoImage(file='assets/ui/horizontalswitch-on.png')
-    btn_off = tk.PhotoImage(file='assets/controls/TextButtonOff.png')
-    btn_on = tk.PhotoImage(file='assets/controls/TextButtonOn.png')
-    hslider = tk.PhotoImage(file='assets/controls/SliderH.png')
-    vslider = tk.PhotoImage(file='assets/controls/SliderV.png')
-    box_off = tk.PhotoImage(file='assets/controls/red-off.png')
-    box_on = tk.PhotoImage(file='assets/controls/red-on.png')
+    hswitch1 = Switch(self, 'Calcium Razor', 'CALCIUM_RAZOR', (0, 0))
+    vswitch1 = Switch(self, 'Arcball Pendulum', 'ARCBALL_PENDULUM', (2, 1), horizontal=False)
+    binbtn = BinaryButton(self, 'Salty Cannister', 'SALTY_CANNISTER', (1, 0))
+    btngrp = ButtonGroup(self, 'Protolube Optimizer', 'PROTOLUBE_OPTIMIZER', (3, 0), ['Defragment', 'Fragment'])
+    vslider = VerticalSlider(self, 'Quasipaddle', 'QUASIPADDLE', (0, 1))
+    hslider = HorizontalSlider(self, 'Psylocibin Capacitor', 'PSYLOCIBIN_CAPACITOR', (1, 2))
 
-    self.vswitch_off = vswitch_off.subsample(2)
-    self.vswitch_on = vswitch_on.subsample(2)
-    self.hswitch_off = hswitch_off.subsample(2)
-    self.hswitch_on = hswitch_on.subsample(2)
-    self.btn_off = btn_off
-    self.btn_on = btn_on
-    self.hslider = hslider
-    self.vslider = vslider
-    self.box_off = box_off
-    self.box_on = box_on
-
-    self.create_text(70, Y_OFFSET + 45, text='Calcium Razor', fill='black', font=_getFont('body'))
-    self.create_image(70, Y_OFFSET + 80, image=self.hswitch_off, tags='HSWITCH1')
-
-    self.create_text(205, Y_OFFSET + 60, text='Salty', fill='black', font=_getFont('body'))
-    self.create_text(205, Y_OFFSET + 75, text='Cannister', fill='black', font=_getFont('body'))
-    self.create_image(295, Y_OFFSET + 64, image=self.box_off, tags='BOX1')
-    self.create_image(370, Y_OFFSET + 64, image=self.box_off, tags='BOX2')
-    self.create_text(295, Y_OFFSET + 64, text='0', fill='white', font=_getFont('heading-2x'), tags='BOX1L')
-    self.create_text(370, Y_OFFSET + 64, text='1', fill='white', font=_getFont('heading-2x'), tags='BOX2L')
-
-    self.create_text(565, Y_OFFSET + 50, text='Protolube Optimizer', fill='black', font=_getFont('body'))
-    self.create_image(565, Y_OFFSET + 105, image=self.btn_off, tags='BTN1')
-    self.create_image(565, Y_OFFSET + 180, image=self.btn_off, tags='BTN2')
-    self.create_text(565, Y_OFFSET + 105, text='Fragment', fill='white', font=_getFont('heading-2s'), tags='BTN1L')
-    self.create_text(565, Y_OFFSET + 180, text='Defragment', fill='white', font=_getFont('heading-2s'), tags='BTN2L')
-
-    self.create_text(70, Y_OFFSET + 155, text='Quasipaddle', fill='black', font=_getFont('body'))
-    self.create_rectangle(200, Y_OFFSET + 317, 500, Y_OFFSET + 322, fill='black', outline='', tags='HSLIDER_GUIDE')
-    self.create_image(200, Y_OFFSET + 320, image=self.hslider, tags='HSLIDER')
-    for i in range(5): self.create_text(200 + (i * 75), Y_OFFSET + 355, text=str(i), fill='black', font=_getFont('body3'))
-
-    self.create_text(350, Y_OFFSET + 165, text='Arcball Pendulum', fill='black', font=_getFont('body'))
-    self.create_image(350, Y_OFFSET + 195, image=self.vswitch_off, tags='VSWITCH1')
-
-    self.create_text(350, Y_OFFSET + 290, text='Psylocibin Capacitor', fill='black', font=_getFont('body'))
-    self.create_rectangle(68, Y_OFFSET + 225, 73, 555, fill='black', outline='', tags='VSLIDER_GUIDE')
-    self.create_image(70, Y_OFFSET + 215, image=self.vslider, tags='VSLIDER')
-    for i in range(3): self.create_text(35, Y_OFFSET + 215 + (i * 60), text=str(i), fill='black', font=_getFont('body3'))
-
-
-    self.tag_bind('HSWITCH1', '<Button-1>', lambda _: self.toggleHSwitch('HSWITCH1'))
-    self.tag_bind('VSWITCH1', '<Button-1>', lambda _: self.toggleVSwitch('VSWITCH1'))
-
-    self.tag_bind('BOX1', '<Button-1>', lambda _: self.toggleBoxButton('BOX1', True))
-    self.tag_bind('BOX1', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX1', False))
-    self.tag_bind('BOX2', '<Button-1>', lambda _: self.toggleBoxButton('BOX2', True))
-    self.tag_bind('BOX2', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX2', False))
-    self.tag_bind('BOX1L', '<Button-1>', lambda _: self.toggleBoxButton('BOX1', True))
-    self.tag_bind('BOX1L', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX1', False))
-    self.tag_bind('BOX2L', '<Button-1>', lambda _: self.toggleBoxButton('BOX2', True))
-    self.tag_bind('BOX2L', '<ButtonRelease-1>', lambda _: self.toggleBoxButton('BOX2', False))
-
-    self.tag_bind('BTN1', '<Button-1>', lambda _: self.toggleButton('BTN1', True))
-    self.tag_bind('BTN1', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN1', False))
-    self.tag_bind('BTN2', '<Button-1>', lambda _: self.toggleButton('BTN2', True))
-    self.tag_bind('BTN2', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN2', False))
-    self.tag_bind('BTN1L', '<Button-1>', lambda _: self.toggleButton('BTN1', True))
-    self.tag_bind('BTN1L', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN1', False))
-    self.tag_bind('BTN2L', '<Button-1>', lambda _: self.toggleButton('BTN2', True))
-    self.tag_bind('BTN2L', '<ButtonRelease-1>', lambda _: self.toggleButton('BTN2', False))
-
-    self.tag_bind('HSLIDER', '<B1-Motion>', lambda e: self.handleHSlider('HSLIDER', 'HSLIDER_GUIDE', e))
-    self.tag_bind('HSLIDER', '<ButtonRelease-1>', lambda e: self.handleHSliderDrop('HSLIDER', 'HSLIDER_GUIDE', 4, e))
-    self.tag_bind('VSLIDER', '<B1-Motion>', lambda e: self.handleVSlider('VSLIDER', 'VSLIDER_GUIDE', e))
-    self.tag_bind('VSLIDER', '<ButtonRelease-1>', lambda e: self.handleVSliderDrop('VSLIDER', 'VSLIDER_GUIDE', 2, e))
