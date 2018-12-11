@@ -62,6 +62,12 @@ if __name__ == '__main__':
       
       if data.toggle: print('Player {} is ready!'.format(data.player_id))
       else: print('Player {} is not ready!'.format(data.player_id))
+    elif packet.type == packet.COMMAND: 
+      data = _parse(packet.CommandPacket, data)
+      print("received command packet", data.command)
+      if data.command == "No Command":
+        print(data)
+
 
   app.listen(parser)
 

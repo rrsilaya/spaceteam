@@ -79,30 +79,39 @@ class App:
     else: print('[READY] Player {} is not ready!'.format(port))
 
     if ready:# and len(self.games[lobby_id].players) > 1:
-      payload = self.packet.CommandPacket()
-      payload.type = self.packet.COMMAND
-      payload.command = commands.types.NO_COMMAND
-
-      self.connection.broadcast(self.games[lobby_id].players, payload)
-      Thread(
-        target=self._clockTick,
-        args=[
-          lobby_id,
-          self.games[lobby_id].players,
-          50
-        ]
-      ).start()
       
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.sector = 1
       payload.update = self.packet.GameStatePacket.SECTOR
-  
+
+      self.connection.broadcast(self.games[lobby_id].players, payload)
+      
+      payload = self.packet.CommandPacket()
+      payload.type = self.packet.COMMAND 
+      payload.command = commands.types.NO_COMMAND
+
+      self.connection.broadcast(self.games[lobby_id].players, payload)
+
+      Thread(
+        target=self._clockTick,
+        args=[
+          lobby_id,
+          self.games[lobby_id].players,
+          30
+        ],
+        kwargs={
+          'screen': self.packet.GameStatePacket.SECTOR,
+          'callback': self.games[lobby_id].start
+        }
+      ).start()
+      
   def _clockTick(self, lobby, address, time, **kw):
     self.games[lobby].clock = time
 
     for remaining in range(time, -1, -1):
       self.games[lobby].clock = remaining
+
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
       payload.clock = remaining
