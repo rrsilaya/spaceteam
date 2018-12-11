@@ -1,0 +1,62 @@
+syntax = "proto2";
+
+option java_package = "proto";
+option java_outer_classname = "TcpPacketProtos";
+
+message SpaceteamPacket {
+  enum PacketType {
+    GAME_STATE = 0;
+    CONNECT = 1;
+    READY = 2;
+    DISCONNECT = 3;
+    COMMAND = 4;
+  }
+
+  required PacketType type = 1;
+
+  message GameStatePacket {
+    enum Update {
+      CONNECT = 0;
+      DISCONNECT = 1;
+      SECTOR = 2;
+      CLOCK_TICK = 3;
+    }
+
+    enum Screen {
+      LOBBY = 0;
+      SECTOR_WAIT = 1;
+      SHIP_WAIT = 2;
+      SHIP = 3;
+    }
+
+    required PacketType type = 1;
+    optional int32 player_count = 2;
+    optional int32 sector = 3;
+    optional int32 clock = 4;
+    optional int32 total_time = 5;
+    required GameStatePacket.Update update = 6;
+    optional GameStatePacket.Screen screen = 7;
+  }
+
+  message ConnectPacket {
+    required PacketType type = 1;
+    required string lobby_id = 2;
+  }
+
+  message ReadyPacket {
+    required PacketType type = 1;
+    required bool toggle = 2;
+    optional string player_id = 3;
+  }
+
+  message DisconnectPacket {
+    required PacketType type = 1;
+  }
+
+  message CommandPacket {
+    required PacketType type = 1;
+    optional string panel = 2;
+    required string command = 3;
+  }
+
+}
