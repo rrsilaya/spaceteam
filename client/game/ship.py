@@ -22,11 +22,7 @@ class Ship(tk.Canvas):
 
     self._loadView()
     self._preparePanels()
-<<<<<<< HEAD
     self._prepareControls(0)
-=======
-    self._prepareControls()
->>>>>>> c7e2817ff07502456d3d6f48d7ae7fc17c7e91ca
     Thread(target=self.clockTick).start()
 
   def addPanel(self, **kw):
@@ -42,10 +38,7 @@ class Ship(tk.Canvas):
     )
 
   def _preparePanels(self):
-<<<<<<< HEAD
-=======
     circuits = tk.PhotoImage(file='assets/background/circuits.png')
->>>>>>> c7e2817ff07502456d3d6f48d7ae7fc17c7e91ca
     # Panels
     panel1x1 = tk.PhotoImage(file='assets/panels/1x1.png')
     panel1x2 = tk.PhotoImage(file='assets/panels/1x2.png')
@@ -108,7 +101,6 @@ class Ship(tk.Canvas):
       tick -= 1
       sleep(0.1)
 
-<<<<<<< HEAD
   def _prepareControls(self, player):
     if player == 0:
       self.controls = [
@@ -153,13 +145,3 @@ class Ship(tk.Canvas):
         Switch(self, 'Waste Dump', 'WASTE_DUMP', (3, 2)),
         VerticalSlider(self, 'Int Lights', 'INT_LIGHTS', (4, 1)),
       ]
-=======
-  def _prepareControls(self):
-    hswitch1 = Switch(self, 'Calcium Razor', 'CALCIUM_RAZOR', (0, 0))
-    vswitch1 = Switch(self, 'Arcball Pendulum', 'ARCBALL_PENDULUM', (2, 1), horizontal=False)
-    binbtn = BinaryButton(self, 'Salty Cannister', 'SALTY_CANNISTER', (1, 0))
-    btngrp = ButtonGroup(self, 'Protolube Optimizer', 'PROTOLUBE_OPTIMIZER', (3, 0), ['Defragment', 'Fragment'])
-    vslider = VerticalSlider(self, 'Quasipaddle', 'QUASIPADDLE', (0, 1))
-    hslider = HorizontalSlider(self, 'Psylocibin Capacitor', 'PSYLOCIBIN_CAPACITOR', (1, 2))
-
->>>>>>> c7e2817ff07502456d3d6f48d7ae7fc17c7e91ca
