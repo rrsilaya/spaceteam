@@ -86,25 +86,8 @@ class App:
       payload.update = self.packet.GameStatePacket.SECTOR
 
       self.connection.broadcast(self.games[lobby_id].players, payload)
-      
-      payload = self.packet.CommandPacket()
-      payload.type = self.packet.COMMAND 
-      payload.command = commands.types.NO_COMMAND
 
-      self.connection.broadcast(self.games[lobby_id].players, payload)
-
-      Thread(
-        target=self._clockTick,
-        args=[
-          lobby_id,
-          self.games[lobby_id].players,
-          30
-        ],
-        kwargs={
-          'screen': self.packet.GameStatePacket.SECTOR,
-          'callback': self.games[lobby_id].start
-        }
-      ).start()
+      self.games[lobby_id].start()
       
   def _clockTick(self, lobby, address, time, **kw):
     self.games[lobby].clock = time
