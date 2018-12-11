@@ -9,21 +9,35 @@ CHOICE = 2
 SINGLE = 3
 
 class types:
-  CALCIUM_RAZOR = 0
-  LORENTZ_WHITTLER = 1
-  KILOBYPASS_TRANSFORMER = 2
-  IODINE_SHOWER = 3
-  CONTRACTING_PROPELLER = 4
-  QUASIPADDLE = 5
-  HOLOSPINDLE = 6
-  ARCBALL_PENDULUM = 7
-  PRESSURIZED_VARNISH = 8
-  ORBRING = 9
-  FLUXLOOSENER_INDUCER = 10
-  PROTOLUBE_OPTIMIZER = 11
-  PSILOCYBIN_CAPACITOR = 12
-  SALTY_CANISTER = 13
-  ALTITUDE_OPERATOR = 14
+  NO_COMMAND = "NO_COMMAND"
+  CALCIUM_RAZOR = "CALCIUM_RAZOR"
+  LORENTZ_WHITTLER = "LORENTZ_WHITTLER"
+  KILOBYPASS_TRANSFORMER = "KILOBYPASS_TRANSFORMER"
+  IODINE_SHOWER = "IODINE_SHOWER"
+  CONTRACTING_PROPELLER = "CONTRACTING_PROPELLER"
+  QUASIPADDLE = "QUASIPADDLE"
+  HOLOSPINDLE = "HOLOSPINDLE"
+  ARCBALL_PENDULUM = "ARCBALL_PENDULUM"
+  PRESSURIZED_VARNISH = "PRESSURIZED_VARNISH"
+  ORBRING = "ORBRING"
+  FLUXLOOSENER_INDUCER = "FLUXLOOSENER_INDUCER"
+  PROTOLUBE_OPTIMIZER = "PROTOLUBE_OPTIMIZER"
+  PSILOCYBIN_CAPACITOR = "PSILOCYBIN_CAPACITOR"
+  SALTY_CANISTER = "SALTY_CANISTER"
+  ALTITUDE_OPERATOR = "ALTITUDE_OPERATOR"
+  WAVEFORM_COLLIDER = "WAVEFORM_COLLIDER"
+  ALPHA_WAVE = "ALPHA_WAVE"
+  GLYCOL_PUMP = "GLYCOL_PUMP"
+  CABIN_FAN = "CABIN_FAN"
+  GAMMA_RADIATOR = "GAMMA_RADIATOR"
+  THERMONUCLEAR_RESONATOR = "THERMONUCLEAR_RESONATOR"
+  DOCKING_PROBE = "DOCKING_PROBE"
+  SCE_POWER = "SCE_POWER"
+  SUIT_COMPOSITION = "SUIT_COMPOSITION"
+  H2O_FLOW = "H2O_FLOW"
+  WASTE_DUMP = "WASTE_DUMP"
+  INT_LIGHTS = "INT_LIGHTS"
+
 
 class Command:
   def __init__(self, type, server, **kw):
@@ -31,13 +45,12 @@ class Command:
       self._setInit(
         'Calcium Razor',
         [False, True],
-        TOGGLE,
-        choices=['Toggle On', 'Toggle Off']
+        TOGGLE
       )
     elif type == types.LORENTZ_WHITTLER:
       self._setInit(
         'Lorenz Whittler',
-        [ i + 1 for i in range(5) ],
+        [i for i in range(3)],
         NUMERIC
       )
     elif type == types.KILOBYPASS_TRANSFORMER:
@@ -55,27 +68,26 @@ class Command:
     elif type == types.CONTRACTING_PROPELLER:
       self._setInit(
         'Contracting Propeller',
-        ['Release', 'Kick', 'Acquire'],
+        ['Acquire','Kick'],
         CHOICE
       )
     elif type == types.QUASIPADDLE:
       self._setInit(
         'Quasipaddle',
-        [ i + 1 for i in range(5) ],
+        [i + 1 for i in range(3)],
         NUMERIC
       )
     elif type == types.HOLOSPINDLE:
       self._setInit(
         'Holospindle',
-        [ i + 1 for i in range(2) ],
+        [0,1],
         CHOICE
       )
     elif type == types.ARCBALL_PENDULUM:
       self._setInit(
         'Arcball Pendulum',
-        [False, True],
-        TOGGLE,
-        choices=['Turn On', 'Turn Off']
+        [False,True],
+        TOGGLE
       )
     elif type == types.PRESSURIZED_VARNISH:
       self._setInit(
@@ -86,39 +98,61 @@ class Command:
     elif type == types.ORBRING:
       self._setInit(
         'Orbring',
-        ['Power Up', 'Power Down'],
-        CHOICE
+        [False,True],
+        TOGGLE
       )
     elif type == types.FLUXLOOSENER_INDUCER:
       self._setInit(
         'Fluxloosener Inducer',
-        ['Flush'],
+        [ i for i in range(3) ],
         CHOICE
       )
     elif type == types.PROTOLUBE_OPTIMIZER:
       self._setInit(
         'Protolube Optimizer',
-        [False, True],
-        TOGGLE,
-        choices=['Fragment', 'Defragment']
+        ['Defragment','Fragment'],
+        CHOICE
       )
     elif type == types.PSILOCYBIN_CAPACITOR:
       self._setInit(
         'Psilocybin Capacitor',
-        [ (i * 10) + 50 for i in range(5) ],
+        [ i for i in range(5) ],
         NUMERIC
       )
     elif type == types.SALTY_CANISTER:
       self._setInit(
         'Salty Canister',
-        [False, True],
-        TOGGLE,
-        choices=['Open', 'Close']
+        [0,1],
+        CHOICE
       )
     elif type == types.ALTITUDE_OPERATOR:
       self._setInit(
         'Altitude Operator',
-        ['Approach', 'Kick'],
+        [False, True],
+        TOGGLE
+      )
+    elif type == types.WAVEFORM_COLLIDER:
+      self._setInit(
+        'Waveform Collider',
+        [0,1],
+        CHOICE
+      )   
+    elif type == types.ALPHA_WAVE:
+      self._setInit(
+        'Alpha Wave',
+        [i for i in range(3)],
+        NUMERIC
+      )     
+    elif type == types.GLYCOL_PUMP:
+       self._setInit(
+        'Glycol Pump',
+        [False,True],
+        TOGGLE
+      )       
+    elif type == types.CABIN_FAN:
+      self._setInit(
+        'Cabin Fan',
+        [0,1],
         CHOICE
       )
     elif type == types.GAMMA_RADIATOR:
@@ -208,26 +242,37 @@ class Command:
     payload = self.packet.GameStatePacket()
     payload.type = self.packet.GAME_STATE
     payload.clock = self.time
+    payload.total_time = self.time
     payload.update = self.packet.GameStatePacket.CLOCK_TICK
     payload.screen = self.packet.GameStatePacket.SHIP
 
-    self.server.connection.send(address, payload)
+    if self.command != types.NO_COMMAND:
+      self.server.connection.send(address, payload)
+    else:
+      self.server.connection.broadcast(address, payload)
     while self.time > 0 and not self.isResolved:
       self.time -= 1
       payload.clock = self.time
 
-      self.server.connection.send(address, payload)
+      if self.command != types.NO_COMMAND:
+        self.server.connection.send(address, payload)
+      else:
+        self.server.connection.broadcast(address, payload)
       sleep(0.1)
 
-    if not self.isResolved:
+    if not self.isResolved and self.command != types.NO_COMMAND:
       print('Failed to execute command <{}: {}>'.format(self.name, self.command))
       self.callbacks['updateLife'](-25)
       self.isResolved = True
 
   def spawn(self, address):
     self.isResolved = False
-    self.time = 50
-    self.command = self.getRandomCommand()
+    self.time = 40
+
+    if (self.type != types.NO_COMMAND):
+      self.command = self.getRandomCommand()
+    else:
+      self.command = types.NO_COMMAND
 
     payload = self.packet.CommandPacket()
     payload.type = self.packet.COMMAND
@@ -236,6 +281,9 @@ class Command:
 
     print('> {}: {}'.format(self.name, payload.command))
 
-    self.server.connection.send(address, payload)
-    Thread(target=self.tick, args=[address]).start()
-
+    if (self.type != types.NO_COMMAND):
+      self.server.connection.send(address, payload)
+      Thread(target=self.tick, args=[address]).start()
+    else:
+      self.server.connection.broadcast(address, payload)
+      self.tick(address)

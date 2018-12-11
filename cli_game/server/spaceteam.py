@@ -1,5 +1,6 @@
 import random
-from server import Command
+from server import Command, commands
+from proto.spaceteam_pb2 import SpaceteamPacket
 
 BASE_COMMAND_COUNT = 10
 BASE_TIME = 50
@@ -117,9 +118,7 @@ class SpaceTeam:
     no_command = Command(commands.types.NO_COMMAND,self.server)
     no_command.spawn(self.players)
 
-    panels = self.collection_commands
-    print(panels)
-    
+    panels = self.collection_commands0    
     panels = [ Command(panel, self.server, updateLife=self.updateLife) for panel in panels ]
 
     self.commands = random.sample(panels, len(self.players))
