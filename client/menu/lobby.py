@@ -1,8 +1,13 @@
 import tkinter as tk
 import menu
 import chat
+import random
+import re
 
 from game import WaitingRoom, Ship, Win, Lose
+
+BOOL = ['Toggle', 'Switch', 'Flip']
+NUMERIC = ['Set', 'Slide', 'Drive', 'Activate']
 
 class Lobby(tk.Frame):
   def __init__(self, root):
@@ -16,6 +21,7 @@ class Lobby(tk.Frame):
     self.gameData = {
       'screen': 'LOBBY',
       'room': self.root.gameRoom,
+      'player_index': 0,
 
       'currentTime': 50,
       'totalTime': 50,
@@ -53,6 +59,8 @@ class Lobby(tk.Frame):
           self.changeGameScreen(Win)
         else:
           self.changeGameScreen(Lose)
+
+        self.gameConnection.active = False
     elif p.type == p.COMMAND:
       data = Lobby.parsePacket(p.CommandPacket, data)
 
@@ -61,7 +69,12 @@ class Lobby(tk.Frame):
         self.gameData['screen'] = 'SHIP'
         self.changeGameScreen(Ship)
       else:
-        self.gameData['command'] = 'Set {} to {}'.format(data.command, data.panel)
+        if re.match(r'^(True|False)$', data.command):
+          self.gameData['command'] = '{} {}'.format(random.sample(BOOL, 1)[0], data.panel)
+        elif re.match(r'^(\d)$', data.command):
+          self.gameData['command'] = '{} {} to {}'.format(random.sample(NUMERIC, 1)[0], data.panel, data.command)
+        else:
+          self.gameData['command'] = '{} {}'.format(data.command, data.panel)
 
   def changeGameScreen(self, screen):
     before = self.game

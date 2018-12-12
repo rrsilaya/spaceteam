@@ -27,6 +27,7 @@ class WaitingRoom(tk.Canvas):
   def renderPlayers(self, count):
     if self.player_index is None:
       self.player_index = count - 1
+      self.root.gameData['player_index'] = self.player_index
 
     for p in range(4): self.delete('player{}'.format(p))
 
@@ -105,7 +106,7 @@ class WaitingRoom(tk.Canvas):
       self.create_image(x * 192, 310, image=self.floor)
 
     # Bind function
-    self.renderPlayers(1) # hack-ish way
+    # self.renderPlayers(1) # hack-ish way
     self.root.gameData['renderPlayers'] = self.renderPlayers
 
     self.create_image(80, 280, image=self.door, tags='DOOR')

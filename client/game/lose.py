@@ -27,7 +27,6 @@ class Lose(tk.Canvas):
     self.sun = sun.zoom(3)
 
     self.create_image(0, 0, image=self.space, anchor=tk.NW)
-    self.create_image(-30, 50, image=self.ship, tags='SHIP')
 
     self.create_image(350, 220, image=self.sun)
     self.create_text(350, 350, font=_getFont('heading-2x'), fill='white', text='YOU JUST CRASHED!')

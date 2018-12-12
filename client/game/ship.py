@@ -20,7 +20,7 @@ class Ship(tk.Canvas):
 
     self._loadView()
     self._preparePanels()
-    self._prepareControls(0)
+    self._prepareControls(self.root.gameData['player_index'])
     Thread(target=self.clockTick).start()
     Thread(target=self.commandListener).start()
 
@@ -99,6 +99,8 @@ class Ship(tk.Canvas):
         self.itemconfig('TIMER', fill='red')
 
       sleep(0.1)
+    
+    self.itemconfig('TIMER', fill='green')
 
   def commandListener(self):
     prevCommand = self.root.gameData['command']
