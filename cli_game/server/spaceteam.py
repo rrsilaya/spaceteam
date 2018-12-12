@@ -7,9 +7,9 @@ from threading import Thread
 BASE_TIME = 50
 
 LOSE_POINTS = 0
-WIN_POINTS = 200
+WIN_POINTS = 400
 POINT_INCREMENT = 15
-POINT_DECREMENT = 15
+POINT_DECREMENT = -10
 
 class SpaceTeam:
   def __init__(self, lobby, server):
@@ -85,7 +85,7 @@ class SpaceTeam:
       if(slug == command) and (props == str(panel).upper()):
         self.commands[cmd].isResolved = True
         self.commands[cmd].state = self.commands[cmd].command
-        self.updateLife(25)
+        self.updateLife(POINT_INCREMENT)
         print("Successfully Resolved", panel, " to ", command)
         break
 

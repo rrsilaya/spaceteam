@@ -3,6 +3,9 @@ from time import sleep
 from proto.spaceteam_pb2 import SpaceteamPacket
 from threading import Thread
 
+POINT_INCREMENT = 15
+POINT_DECREMENT = -10
+
 TOGGLE = 0
 NUMERIC = 1
 CHOICE = 2
@@ -161,7 +164,7 @@ class Command:
 
     if not self.isResolved and self.command != types.NO_COMMAND:
       print('Failed to execute command <{}: {}>'.format(self.name, self.command))
-      self.callbacks['updateLife'](-25)
+      self.callbacks['updateLife'](POINT_DECREMENT)
       self.isResolved = True
 
   def spawn(self, address):
