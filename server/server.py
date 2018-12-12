@@ -81,7 +81,7 @@ class App:
     if data.toggle: print('[READY] Player {} is ready!'.format(port))
     else: print('[READY] Player {} is not ready!'.format(port))
 
-    if ready and len(self.games[lobby_id].players) > 1:
+    if ready and len(self.games[lobby_id].players) > 2:
       
       payload = self.packet.GameStatePacket()
       payload.type = self.packet.GAME_STATE
@@ -120,7 +120,6 @@ class App:
 
     lobby_id = self.players[SpaceTeam.getPlayerId(address)]
     self.games[lobby_id].checkResolved(data.panel, data.command)
-
 
   def parsePacket(self, data, address):
     self.packet.ParseFromString(data)
